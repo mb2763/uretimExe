@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{693D526B-50A9-46A6-B6D2-B0AE083EEC78}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>My.DatabaseSettings</RootNamespace>
+    <AssemblyName>DatabaseKontrol</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Database-Upload.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Dapper.2.0.90\lib\net461\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="My.Dapper.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\UretimCore\Confused\My.Dapper.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="My.Kontrol">
+      <HintPath>..\..\Dll\My.Kontrol.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DatabaseCreate\Base\MyResult.cs" />
+    <Compile Include="DatabaseCreate\Base\TableCreate.cs" />
+    <Compile Include="DatabaseCreate\DepoKabulCreate.cs" />
+    <Compile Include="DatabaseCreate\DepoKabulCreateModule\CreateDepoKabulIrsaliye.cs" />
+    <Compile Include="DatabaseCreate\DepoKabulCreateModule\CreateDepoKontrolAciklama.cs" />
+    <Compile Include="DatabaseCreate\DepoKabulCreateModule\CreateDepoKontrolIadeSevk.cs" />
+    <Compile Include="DatabaseCreate\DepoKabulCreateModule\CreateDepoStok.cs" />
+    <Compile Include="DatabaseCreate\DepoKabulCreateModule\CreateDepoStokBarkod.cs" />
+    <Compile Include="DatabaseCreate\DepoKabulCreateModule\CreateDepoStokFis.cs" />
+    <Compile Include="DatabaseCreate\DepoKabulCreateModule\CreateDepoStokHareket.cs" />
+    <Compile Include="DatabaseCreate\DepoKabulCreateModule\CreateDepoKabulIrsaliyeDetay.cs" />
+    <Compile Include="DatabaseCreate\DepoKabulCreateModule\CreateDepo.cs" />
+    <Compile Include="DatabaseCreate\DepoKabulCreateModule\CreateSayimFisi.cs" />
+    <Compile Include="DatabaseCreate\DepoKabulCreateModule\CreateSayimFisiHareket.cs" />
+    <Compile Include="DatabaseCreate\DepoKabulCreateModule\Create_IndexList.cs" />
+    <Compile Include="DatabaseCreate\DepoKabulCreateModule\Create_ProcedureList.cs" />
+    <Compile Include="DatabaseCreate\DepoKabulCreateModule\CreateDepoKabulIrsaliyeHareket.cs" />
+    <Compile Include="DatabaseCreate\GenelCreate.cs" />
+    <Compile Include="DatabaseCreate\GenelCreateModule\CreateAyar.cs" />
+    <Compile Include="DatabaseCreate\GenelCreateModule\CreateCari.cs" />
+    <Compile Include="DatabaseCreate\GenelCreateModule\CreateCariAdres.cs" />
+    <Compile Include="DatabaseCreate\GenelCreateModule\CreateDepo.cs" />
+    <Compile Include="DatabaseCreate\GenelCreateModule\CreateKullaniciIzinler.cs" />
+    <Compile Include="DatabaseCreate\GenelCreateModule\CreateMailSettings.cs" />
+    <Compile Include="DatabaseCreate\GenelCreateModule\CreateStok.cs" />
+    <Compile Include="DatabaseCreate\GenelCreateModule\Create_IndexList.cs" />
+    <Compile Include="DatabaseCreate\GenelCreateModule\Create_ProcedureList.cs" />
+    <Compile Include="DatabaseCreate\GenelCreateModule\CreateAyarSayac.cs" />
+    <Compile Include="DatabaseCreate\GenelCreateModule\CreateKullaniciYetkiler.cs" />
+    <Compile Include="DatabaseCreate\GenelCreateModule\MesajlarCreates.cs" />
+    <Compile Include="DatabaseCreate\GenelCreateModule\PersonelAyarAdCreates.cs" />
+    <Compile Include="DatabaseCreate\GenelCreateModule\PersonelAyarCreates.cs" />
+    <Compile Include="DatabaseCreate\GenelCreateModule\SiteAyarCreates.cs" />
+    <Compile Include="DatabaseCreate\TempCreateModule\TempMikroStokCreates.cs" />
+    <Compile Include="DatabaseCreate\TempCreateModule\TempMikroStokKategoriCreates.cs" />
+    <Compile Include="DatabaseCreate\TempCreateModule\TempSiparisUretimMiktarCreates.cs" />
+    <Compile Include="DatabaseCreate\TempCreateModule\TempSonGuncellemeCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\AciklamaKodCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\IstasyonBakimCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\IstasyonBakimParcaCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\IstasyonKartiCreates.cs" />
+    <Compile Include="DatabaseCreate\GenelCreateModule\CreateKullanici.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\IstasyonAciklamaCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\IstasyonKontrolCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\IstasyonTakipHareketCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\IstasyonTakipHareketLogCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\IstasyonTakipStokHareketCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\IstasyonTakipHareketDetayCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\IstasyonTakipStokHareketDetayCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\OperasyonKartiCreates.cs" />
+    <Compile Include="DatabaseCreate\GenelCreateModule\CreatePersonel.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\ReceteAnaCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\ReceteDetayCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\ReceteGrupCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\ReceteGrupDetayCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\ReceteIstasyonCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\ReceteIstasyonCariCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\ReceteIstasyonGrupIstasyonCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\ReceteIstasyonGrupKodCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\ReceteIstasyonGrupOperasyonCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\ReceteOperasyonCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\ReceteStokCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\ReceteStokRenkBedenCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\ReceteyeBagliIstasyonCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\SiparisCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\SiparisHareketCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\SiparisHareketDetayCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\AciklamaDegerCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\SmsAyarCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\UretimEmriCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\UretimIstasyonCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\UretimIstasyonHareketCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\UretimKontrolCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\UretimOperasyonCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\UretimOperasyonHareketCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\UretimOperasyonHareketDetayCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\UretimStokCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\UretimStokFisCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\UretimStokFisHareketCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\_IndexListCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\_ProcedureListCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreate.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\UretimTalepCreates.cs" />
+    <Compile Include="DatabaseCreate\UretimCreateModule\UretimTalepHareketCreates.cs" />
+    <Compile Include="Entites\Kullanici.cs" />
+    <Compile Include="Entites\KullaniciYetkilerModel.cs" />
+    <Compile Include="FrmAna.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmAna.Designer.cs">
+      <DependentUpon>FrmAna.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DatabasePanel\FrmDataPaneli.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DatabasePanel\FrmDataPaneli.Designer.cs">
+      <DependentUpon>FrmDataPaneli.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DatabasePanel\MyFrmDataPaneli.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DatabasePanel\MyFrmDataPaneli.Designer.cs">
+      <DependentUpon>MyFrmDataPaneli.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmKullaniciAyar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmKullaniciAyar.Designer.cs">
+      <DependentUpon>FrmKullaniciAyar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmKullaniciYetkiler.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmKullaniciYetkiler.Designer.cs">
+      <DependentUpon>FrmKullaniciYetkiler.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmLogin.Designer.cs">
+      <DependentUpon>FrmLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Ortak.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FrmAna.resx">
+      <DependentUpon>FrmAna.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DatabasePanel\FrmDataPaneli.resx">
+      <DependentUpon>FrmDataPaneli.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DatabasePanel\MyFrmDataPaneli.resx">
+      <DependentUpon>MyFrmDataPaneli.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmKullaniciAyar.resx">
+      <DependentUpon>FrmKullaniciAyar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmKullaniciYetkiler.resx">
+      <DependentUpon>FrmKullaniciYetkiler.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmLogin.resx">
+      <DependentUpon>FrmLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Database-Upload.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

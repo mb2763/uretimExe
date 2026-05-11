@@ -1,0 +1,438 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9C4DDC8B-5A7B-427F-AC66-0B6827621DCD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>My</RootNamespace>
+    <AssemblyName>My.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\Nuget\nuget_packages\Dapper.2.0.90\lib\net461\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="My.Dapper.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dll\My.Dapper.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.2.10.0\lib\net46\Serilog.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.File, Version=5.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.File.5.0.0\lib\net45\Serilog.Sinks.File.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\Nuget\nuget_packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\Nuget\nuget_packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Unity.Abstractions, Version=4.0.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\Nuget\nuget_packages\Unity.5.9.4\lib\net46\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.9.4.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\Nuget\nuget_packages\Unity.5.9.4\lib\net46\Unity.Container.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Business\Manager\DepoStokFisManager.cs" />
+    <Compile Include="Business\Manager\IstasyonBakimManager.cs" />
+    <Compile Include="Business\Manager\IstasyonHareketManager.cs" />
+    <Compile Include="Business\Manager\IstasyonManager.cs" />
+    <Compile Include="Business\Manager\IstasyonRaporManager.cs" />
+    <Compile Include="Business\Manager\MikroConvertManager.cs" />
+    <Compile Include="Business\Manager\MikroKayitFisTurleri.cs" />
+    <Compile Include="Business\Manager\OperasyonManager.cs" />
+    <Compile Include="Business\Service\Depolar\DepoService.cs" />
+    <Compile Include="Business\Service\Depolar\IDepoService.cs" />
+    <Compile Include="Business\Service\IstasyonBakimlar\IIstasyonBakimParcaService.cs" />
+    <Compile Include="Business\Service\IstasyonBakimlar\IIstasyonBakimService.cs" />
+    <Compile Include="Business\Service\IstasyonBakimlar\IstasyonBakimParcaService.cs" />
+    <Compile Include="Business\Service\IstasyonBakimlar\IstasyonBakimService.cs" />
+    <Compile Include="Business\Service\IstasyonTakipler\IIstasyonTakipHareketLogService.cs" />
+    <Compile Include="Business\Service\IstasyonTakipler\IIstasyonTakipHareketService.cs" />
+    <Compile Include="Business\Service\IstasyonTakipler\IIstasyonTakipHareketDetayService.cs" />
+    <Compile Include="Business\Service\IstasyonTakipler\IIstasyonTakipStokHareketDetayService.cs" />
+    <Compile Include="Business\Service\IstasyonTakipler\IIstasyonTakipStokHareketService.cs" />
+    <Compile Include="Business\Service\IstasyonTakipler\IstasyonTakipHareketLogService.cs" />
+    <Compile Include="Business\Service\IstasyonTakipler\IstasyonTakipHareketService.cs" />
+    <Compile Include="Business\Service\IstasyonTakipler\IstasyonTakipHareketDetayService.cs" />
+    <Compile Include="Business\Manager\MailManager.cs" />
+    <Compile Include="Business\Manager\UretimOperasyonManager.cs" />
+    <Compile Include="Business\Manager\UretimTalepManager.cs" />
+    <Compile Include="Business\Service\IstasyonTakipler\IstasyonTakipStokHareketDetayService.cs" />
+    <Compile Include="Business\Service\MikroModul\IMikroGenelService.cs" />
+    <Compile Include="Business\Service\MikroModul\IMikroPartiLotService.cs" />
+    <Compile Include="Business\Service\MikroModul\MikroGenelService.cs" />
+    <Compile Include="Business\Service\MikroModul\MikroPartiLotService.cs" />
+    <Compile Include="Business\Service\ReceteIstasyonGruplar\IReceteIstasyonGrupIstasyonService.cs" />
+    <Compile Include="Business\Service\ReceteIstasyonGruplar\IReceteIstasyonGrupKodService.cs" />
+    <Compile Include="Business\Service\ReceteIstasyonGruplar\IReceteIstasyonGrupOperasyonService.cs" />
+    <Compile Include="Business\Service\ReceteIstasyonGruplar\ReceteIstasyonGrupIstasyonService.cs" />
+    <Compile Include="Business\Service\ReceteIstasyonGruplar\ReceteIstasyonGrupKodService.cs" />
+    <Compile Include="Business\Service\ReceteIstasyonGruplar\ReceteIstasyonGrupOperasyonService.cs" />
+    <Compile Include="Business\Service\Templer\ITempMikroStokService.cs" />
+    <Compile Include="Business\Service\Templer\ITempSiparisUretimMiktarService.cs" />
+    <Compile Include="Business\Service\Templer\TempMikroStokService.cs" />
+    <Compile Include="Business\Service\Templer\TempSiparisUretimMiktarService.cs" />
+    <Compile Include="Business\Service\UretimAciklamalar\IAciklamaDegerService.cs" />
+    <Compile Include="Business\Service\UretimAciklamalar\AciklamaDegerService.cs" />
+    <Compile Include="Business\Service\UretimAciklamalar\IAciklamaKodService.cs" />
+    <Compile Include="Business\Service\UretimAciklamalar\AciklamaKodService.cs" />
+    <Compile Include="Business\Service\Ayarlar\AyarService.cs" />
+    <Compile Include="Business\Service\Ayarlar\IAyarService.cs" />
+    <Compile Include="Business\Service\Ayarlar\IAyarSayacService.cs" />
+    <Compile Include="Business\Service\Geneller\IGenelService.cs" />
+    <Compile Include="Business\Service\IstasyonAciklamalar\IIstasyonAciklamaService.cs" />
+    <Compile Include="Business\Service\IstasyonAciklamalar\IstasyonAciklamaService.cs" />
+    <Compile Include="Business\Service\IstasyonKartlar\IIstasyonKartiService.cs" />
+    <Compile Include="Business\Service\IstasyonTakipler\IstasyonTakipStokHareketService.cs" />
+    <Compile Include="Business\Service\Kullanicilar\IKullaniciService.cs" />
+    <Compile Include="Business\Service\MailAyarlar\IMailAyarService.cs" />
+    <Compile Include="Business\Service\MesajLar\IMesajlarService.cs" />
+    <Compile Include="Business\Service\MesajLar\MesajlarService.cs" />
+    <Compile Include="Business\Service\Personeller\IPersonelService.cs" />
+    <Compile Include="Business\Service\MikroModul\IMikroCariService.cs" />
+    <Compile Include="Business\Service\MikroModul\IMikroSiparisHareketService.cs" />
+    <Compile Include="Business\Service\MikroModul\IMikroSiparisService.cs" />
+    <Compile Include="Business\Service\OperasyonKartlar\IOperasyonKartiService.cs" />
+    <Compile Include="Business\Service\Receteler\IReceteAnaService.cs" />
+    <Compile Include="Business\Service\ReceteGruplar\IReceteGrupDetayService.cs" />
+    <Compile Include="Business\Service\ReceteGruplar\IReceteGrupService.cs" />
+    <Compile Include="Business\Service\ReceteIstasyonlar\IReceteIstasyonCariService.cs" />
+    <Compile Include="Business\Service\ReceteIstasyonlar\IReceteIstasyonService.cs" />
+    <Compile Include="Business\Service\Receteler\IReceteOperasyonService.cs" />
+    <Compile Include="Business\Service\ReceteStoklar\IReceteStokRenkBedenService.cs" />
+    <Compile Include="Business\Service\ReceteStoklar\IReceteStokService.cs" />
+    <Compile Include="Business\Service\ReceteStoklar\ReceteStokRenkBedenService.cs" />
+    <Compile Include="Business\Service\ReceteIstasyonlar\IReceteyeBagliIstasyonService.cs" />
+    <Compile Include="Business\Service\ReceteIstasyonlar\ReceteyeBagliIstasyonService.cs" />
+    <Compile Include="Business\Service\Siparisler\ISiparisHareketDetayService.cs" />
+    <Compile Include="Business\Service\Siparisler\ISiparisHareketService.cs" />
+    <Compile Include="Business\Service\Siparisler\ISiparisService.cs" />
+    <Compile Include="Business\Service\MikroModul\IMikroStokService.cs" />
+    <Compile Include="Business\Service\Receteler\IReceteDetayService.cs" />
+    <Compile Include="Business\Service\SmsAyarlar\ISmsAyarService.cs" />
+    <Compile Include="Business\Service\SmsAyarlar\SmsAyarService.cs" />
+    <Compile Include="Business\Service\UretimEmirleri\IUretimEmriService.cs" />
+    <Compile Include="Business\Service\UretimIstasyonlar\IUretimIstasyonHareketService.cs" />
+    <Compile Include="Business\Service\UretimIstasyonlar\IUretimIstasyonService.cs" />
+    <Compile Include="Business\Service\UretimKontroller\IUretimKontrolService.cs" />
+    <Compile Include="Business\Service\UretimKontroller\UretimKontrolService.cs" />
+    <Compile Include="Business\Service\UretimOperasyonlar\IUretimOperasyonHareketDetayService.cs" />
+    <Compile Include="Business\Service\UretimOperasyonlar\IUretimOperasyonHareketService.cs" />
+    <Compile Include="Business\Service\UretimOperasyonlar\IUretimOperasyonService.cs" />
+    <Compile Include="Business\Service\UretimStoklar\IUretimStokFisHareketService.cs" />
+    <Compile Include="Business\Service\UretimStoklar\IUretimStokFisService.cs" />
+    <Compile Include="Business\Service\UretimStoklar\IUretimStokService.cs" />
+    <Compile Include="Business\Service\MikroModul\IMikroStokHareketleriService.cs" />
+    <Compile Include="Business\Service\Geneller\GenelService.cs" />
+    <Compile Include="Business\Service\IstasyonKartlar\IstasyonKartiService.cs" />
+    <Compile Include="Business\Service\Kullanicilar\KullaniciService.cs" />
+    <Compile Include="Business\Service\MailAyarlar\MailAyarService.cs" />
+    <Compile Include="Business\Service\MikroModul\MikroCariService.cs" />
+    <Compile Include="Business\Service\MikroModul\MikroSiparisHareketService.cs" />
+    <Compile Include="Business\Service\MikroModul\MikroSiparisService.cs" />
+    <Compile Include="Business\Service\MikroModul\MikroStokHareketleriService.cs" />
+    <Compile Include="Business\Service\OperasyonKartlar\OperasyonKartiService.cs" />
+    <Compile Include="Business\Service\Personeller\PersonelService.cs" />
+    <Compile Include="Business\Service\Receteler\ReceteAnaService.cs" />
+    <Compile Include="Business\Service\Receteler\ReceteDetayService.cs" />
+    <Compile Include="Business\Service\ReceteGruplar\ReceteGrupDetayService.cs" />
+    <Compile Include="Business\Service\ReceteGruplar\ReceteGrupService.cs" />
+    <Compile Include="Business\Service\ReceteIstasyonlar\ReceteIstasyonCariService.cs" />
+    <Compile Include="Business\Service\ReceteIstasyonlar\ReceteIstasyonService.cs" />
+    <Compile Include="Business\Service\Receteler\ReceteOperasyonService.cs" />
+    <Compile Include="Business\Service\ReceteStoklar\ReceteStokService.cs" />
+    <Compile Include="Business\Service\Siparisler\SiparisHareketDetayService.cs" />
+    <Compile Include="Business\Service\Siparisler\SiparisHareketService.cs" />
+    <Compile Include="Business\Service\Siparisler\SiparisService.cs" />
+    <Compile Include="Business\Service\MikroModul\MikroStokService.cs" />
+    <Compile Include="Business\Service\Ayarlar\AyarSayacService.cs" />
+    <Compile Include="Business\Service\UretimEmirleri\UretimEmriService.cs" />
+    <Compile Include="Business\Service\UretimIstasyonlar\UretimIstasyonHareketService.cs" />
+    <Compile Include="Business\Service\UretimIstasyonlar\UretimIstasyonService.cs" />
+    <Compile Include="Business\Service\UretimOperasyonlar\UretimOperasyonHareketDetayService.cs" />
+    <Compile Include="Business\Service\UretimOperasyonlar\UretimOperasyonHareketService.cs" />
+    <Compile Include="Business\Service\UretimOperasyonlar\UretimOperasyonService.cs" />
+    <Compile Include="Business\Service\UretimStoklar\UretimStokFisHareketService.cs" />
+    <Compile Include="Business\Service\UretimStoklar\UretimStokFisService.cs" />
+    <Compile Include="Business\Service\UretimStoklar\UretimStokService.cs" />
+    <Compile Include="Business\DatabaseFactoryMikro.cs" />
+    <Compile Include="Business\DatabaseFactoryPro.cs" />
+    <Compile Include="Business\Dependency\Unit\UnityMicro.cs" />
+    <Compile Include="Business\Dependency\Unit\UnityPro.cs" />
+    <Compile Include="Business\Manager\MikroKayitManager.cs" />
+    <Compile Include="Business\Manager\MikroReceteManager.cs" />
+    <Compile Include="Business\Manager\UretimIstasyonTakipManager.cs" />
+    <Compile Include="Business\Manager\ReceteGrupManager.cs" />
+    <Compile Include="Business\Manager\ReceteManager.cs" />
+    <Compile Include="Business\Manager\ReceteOperasyonManager.cs" />
+    <Compile Include="Business\Manager\SiparisManager.cs" />
+    <Compile Include="Business\Manager\UretimEmriManager.cs" />
+    <Compile Include="Business\Manager\UretimIstasyonManager.cs" />
+    <Compile Include="Business\Manager\UretimTakipManagerV2.cs" />
+    <Compile Include="Business\Service\UretimTalepler\UretimTalepHareketService.cs" />
+    <Compile Include="Business\Service\UretimTalepler\IUretimTalepHareketService.cs" />
+    <Compile Include="Business\Service\UretimTalepler\UretimTalepService.cs" />
+    <Compile Include="Business\Service\UretimTalepler\IUretimTalepService.cs" />
+    <Compile Include="DataAccess\ReceteIstasyonGruplar\IReceteIstasyonGrupIstasyonDal.cs" />
+    <Compile Include="DataAccess\ReceteIstasyonGruplar\IReceteIstasyonGrupKodDal.cs" />
+    <Compile Include="DataAccess\ReceteIstasyonGruplar\IReceteIstasyonGrupOperasyonDal.cs" />
+    <Compile Include="DataAccess\ReceteIstasyonGruplar\ReceteIstasyonGrupIstasyonDal.cs" />
+    <Compile Include="DataAccess\ReceteIstasyonGruplar\ReceteIstasyonGrupKodDal.cs" />
+    <Compile Include="DataAccess\ReceteIstasyonGruplar\ReceteIstasyonGrupOperasyonDal.cs" />
+    <Compile Include="DataAccess\UretimAciklamalar\AciklamaDegerDal.cs" />
+    <Compile Include="DataAccess\UretimAciklamalar\IAciklamaDegerDal.cs" />
+    <Compile Include="DataAccess\UretimAciklamalar\IAciklamaKodDal.cs" />
+    <Compile Include="DataAccess\UretimAciklamalar\AciklamaKodDal.cs" />
+    <Compile Include="DataAccess\Ayarlar\AyarDal.cs" />
+    <Compile Include="DataAccess\Ayarlar\IAyarDal.cs" />
+    <Compile Include="DataAccess\Ayarlar\IAyarSayacDal.cs" />
+    <Compile Include="DataAccess\Geneller\IGenelDal.cs" />
+    <Compile Include="DataAccess\IstasyonAciklamalar\IIstasyonAciklamaDal.cs" />
+    <Compile Include="DataAccess\IstasyonAciklamalar\IstasyonAciklamaDal.cs" />
+    <Compile Include="DataAccess\IstasyonBakimlar\IIstasyonBakimDal.cs" />
+    <Compile Include="DataAccess\IstasyonBakimlar\IIstasyonBakimParcaDal.cs" />
+    <Compile Include="DataAccess\IstasyonKartlar\IIstasyonKartiDal.cs" />
+    <Compile Include="DataAccess\IstasyonBakimlar\IstasyonBakimDal.cs" />
+    <Compile Include="DataAccess\IstasyonBakimlar\IstasyonBakimParcaDal.cs" />
+    <Compile Include="DataAccess\IstasyonTakipler\IIstasyonTakipHareketLogDal.cs" />
+    <Compile Include="DataAccess\IstasyonTakipler\IIstasyonTakipStokHareketDal.cs" />
+    <Compile Include="DataAccess\IstasyonTakipler\IIstasyonTakipHareketDetayDal.cs" />
+    <Compile Include="DataAccess\IstasyonTakipler\IIstasyonTakipHareketDal.cs" />
+    <Compile Include="DataAccess\IstasyonTakipler\IstasyonTakipHareketDal.cs" />
+    <Compile Include="DataAccess\IstasyonTakipler\IstasyonTakipHareketLogDal.cs" />
+    <Compile Include="DataAccess\IstasyonTakipler\IstasyonTakipStokHareketDal.cs" />
+    <Compile Include="DataAccess\IstasyonTakipler\IstasyonTakipHareketDetayDal.cs" />
+    <Compile Include="DataAccess\Kullanicilar\IKullaniciDal.cs" />
+    <Compile Include="DataAccess\MailAyarlar\IMailAyarDal.cs" />
+    <Compile Include="DataAccess\MesajLar\IMesajlarDal.cs" />
+    <Compile Include="DataAccess\MesajLar\MesajlarDal.cs" />
+    <Compile Include="DataAccess\Personeller\IPersonelDal.cs" />
+    <Compile Include="DataAccess\MikroModul\IMikroCariDal.cs" />
+    <Compile Include="DataAccess\MikroModul\IMikroSiparisDal.cs" />
+    <Compile Include="DataAccess\MikroModul\IMikroSiparisHareketDal.cs" />
+    <Compile Include="DataAccess\OperasyonKartlar\IOperasyonKartiDal.cs" />
+    <Compile Include="DataAccess\Receteler\IReceteAnaDal.cs" />
+    <Compile Include="DataAccess\Receteler\IReceteDetayDal.cs" />
+    <Compile Include="DataAccess\ReceteGruplar\IReceteGrupDal.cs" />
+    <Compile Include="DataAccess\ReceteGruplar\IReceteGrupDetayDal.cs" />
+    <Compile Include="DataAccess\ReceteIstasyonlar\IReceteIstasyonCariDal.cs" />
+    <Compile Include="DataAccess\ReceteIstasyonlar\IReceteIstasyonDal.cs" />
+    <Compile Include="DataAccess\Receteler\IReceteOperasyonDal.cs" />
+    <Compile Include="DataAccess\ReceteStoklar\IReceteStokDal.cs" />
+    <Compile Include="DataAccess\ReceteStoklar\IReceteStokRenkBedenDal.cs" />
+    <Compile Include="DataAccess\ReceteStoklar\ReceteStokRenkBedenDal.cs" />
+    <Compile Include="DataAccess\ReceteIstasyonlar\IReceteyeBagliIstasyonDal.cs" />
+    <Compile Include="DataAccess\ReceteIstasyonlar\ReceteyeBagliIstasyonDal.cs" />
+    <Compile Include="DataAccess\Siparisler\ISiparisDal.cs" />
+    <Compile Include="DataAccess\Siparisler\ISiparisHareketDal.cs" />
+    <Compile Include="DataAccess\MikroModul\IMikroStokDal.cs" />
+    <Compile Include="DataAccess\Siparisler\ISiparisHareketDetayDal.cs" />
+    <Compile Include="DataAccess\SmsAyarlar\ISmsAyarDal.cs" />
+    <Compile Include="DataAccess\SmsAyarlar\SmsAyarDal.cs" />
+    <Compile Include="DataAccess\UretimEmirler\IUretimEmriDal.cs" />
+    <Compile Include="DataAccess\UretimIstasyonlar\IUretimIstasyonDal.cs" />
+    <Compile Include="DataAccess\UretimIstasyonlar\IUretimIstasyonHareketDal.cs" />
+    <Compile Include="DataAccess\UretimKontroller\IUretimKontrolDal.cs" />
+    <Compile Include="DataAccess\UretimKontroller\UretimKontrolDal.cs" />
+    <Compile Include="DataAccess\UretimOperasyonlar\IUretimOperasyonDal.cs" />
+    <Compile Include="DataAccess\UretimOperasyonlar\IUretimOperasyonHareketDal.cs" />
+    <Compile Include="DataAccess\UretimOperasyonlar\IUretimOperasyonHareketDetayDal.cs" />
+    <Compile Include="DataAccess\UretimStoklar\IUretimStokDal.cs" />
+    <Compile Include="DataAccess\MikroModul\IMikroStokHareketleriDal.cs" />
+    <Compile Include="DataAccess\Ayarlar\AyarSayacDal.cs" />
+    <Compile Include="DataAccess\Geneller\GenelDal.cs" />
+    <Compile Include="DataAccess\IstasyonKartlar\IstasyonKartiDal.cs" />
+    <Compile Include="DataAccess\Kullanicilar\KullaniciDal.cs" />
+    <Compile Include="DataAccess\MailAyarlar\MailAyarDal.cs" />
+    <Compile Include="DataAccess\MikroModul\MikroCariDal.cs" />
+    <Compile Include="DataAccess\MikroModul\MikroSiparisDal.cs" />
+    <Compile Include="DataAccess\MikroModul\MikroSiparisHareketDal.cs" />
+    <Compile Include="DataAccess\MikroModul\MikroStokHareketleriDal.cs" />
+    <Compile Include="DataAccess\OperasyonKartlar\OperasyonKartiDal.cs" />
+    <Compile Include="DataAccess\Personeller\PersonelDal.cs" />
+    <Compile Include="DataAccess\Receteler\ReceteAnaDal.cs" />
+    <Compile Include="DataAccess\Receteler\ReceteDetayDal.cs" />
+    <Compile Include="DataAccess\ReceteGruplar\ReceteGrupDal.cs" />
+    <Compile Include="DataAccess\ReceteGruplar\ReceteGrupDetayDal.cs" />
+    <Compile Include="DataAccess\ReceteIstasyonlar\ReceteIstasyonCariDal.cs" />
+    <Compile Include="DataAccess\ReceteIstasyonlar\ReceteIstasyonDal.cs" />
+    <Compile Include="DataAccess\Receteler\ReceteOperasyonDal.cs" />
+    <Compile Include="DataAccess\ReceteStoklar\ReceteStokDal.cs" />
+    <Compile Include="DataAccess\Siparisler\SiparisDal.cs" />
+    <Compile Include="DataAccess\Siparisler\SiparisHareketDal.cs" />
+    <Compile Include="DataAccess\MikroModul\MikroStokDal.cs" />
+    <Compile Include="DataAccess\UretimEmirler\UretimEmriDal.cs" />
+    <Compile Include="DataAccess\UretimIstasyonlar\UretimIstasyonDal.cs" />
+    <Compile Include="DataAccess\UretimIstasyonlar\UretimIstasyonHareketDal.cs" />
+    <Compile Include="DataAccess\UretimOperasyonlar\UretimOperasyonDal.cs" />
+    <Compile Include="DataAccess\UretimOperasyonlar\UretimOperasyonHareketDal.cs" />
+    <Compile Include="DataAccess\UretimOperasyonlar\UretimOperasyonHareketDetayDal.cs" />
+    <Compile Include="DataAccess\UretimStoklar\IUretimStokFisDal.cs" />
+    <Compile Include="DataAccess\UretimStoklar\UretimStokDal.cs" />
+    <Compile Include="DataAccess\UretimStoklar\UretimStokFisDal.cs" />
+    <Compile Include="DataAccess\UretimTalepler\UretimTalepHareketDal.cs" />
+    <Compile Include="DataAccess\UretimTalepler\IUretimTalepHareketDal.cs" />
+    <Compile Include="DataAccess\UretimTalepler\UretimTalepDal.cs" />
+    <Compile Include="DataAccess\UretimTalepler\IUretimTalepDal.cs" />
+    <Compile Include="Entities\Depolar\Depo.cs" />
+    <Compile Include="Entities\DepoStoklar\DepoStok.cs" />
+    <Compile Include="Entities\DepoStoklar\DepoStokCikisSiraKontrolModel.cs" />
+    <Compile Include="Entities\DepoStoklar\DepoStokFis.cs" />
+    <Compile Include="Entities\DepoStoklar\DepoStokHareket.cs" />
+    <Compile Include="Entities\IstasyonTakipler\IstasyonTakipStokHareketDetay.cs" />
+    <Compile Include="Entities\IstasyonTakipler\IstasyonTakipHareketFireIptal.cs" />
+    <Compile Include="Entities\IstasyonTakipler\IstasyonTakipStokHareketDetayDetayli.cs" />
+    <Compile Include="Entities\IstasyonTakipler\IstasyonTakipStokHareketDetayToplu.cs" />
+    <Compile Include="Entities\IstasyonTakipler\IstasyonTakipStokHareketKullanilan.cs" />
+    <Compile Include="Entities\Mikro\MikroBedenHareketleri.cs" />
+    <Compile Include="Entities\Mikro\MikroDepo.cs" />
+    <Compile Include="Entities\Mikro\MikroPartiLot.cs" />
+    <Compile Include="Entities\Mikro\MikroStokHareketAktarilanFisler.cs" />
+    <Compile Include="Entities\Mikro\MikroStokMaliyet.cs" />
+    <Compile Include="Entities\Models\MalKabulFisKullanilanStokModel.cs" />
+    <Compile Include="Entities\Models\MikroStokSonAlisSatisFiyatlar.cs" />
+    <Compile Include="Entities\Models\ReceteMaliyetStokDetayModel.cs" />
+    <Compile Include="Entities\Models\ReceteMaliyetStokToplamModel.cs" />
+    <Compile Include="Entities\Raporlar\KaliteRaporModel.cs" />
+    <Compile Include="Entities\Raporlar\ReceteRaporuModel.cs" />
+    <Compile Include="Entities\ReceteIstasyonGruplar\ReceteIstasyonGrupIstasyon.cs" />
+    <Compile Include="Entities\ReceteIstasyonGruplar\ReceteIstasyonGrupKod.cs" />
+    <Compile Include="Entities\ReceteIstasyonGruplar\ReceteIstasyonGrupOperasyon.cs" />
+    <Compile Include="Entities\Raporlar\ReceteKullanilanStokModel.cs" />
+    <Compile Include="Entities\StokDepoRaflar\StokDepoRaf.cs" />
+    <Compile Include="Entities\Templer\TempMikroStok.cs" />
+    <Compile Include="Entities\Templer\TempMikroStokKategori.cs" />
+    <Compile Include="Entities\Templer\TempSiparisUretimMiktar.cs" />
+    <Compile Include="Entities\UretimAciklamalar\AciklamaKod.cs" />
+    <Compile Include="Entities\Ayarlar\Ayar.cs" />
+    <Compile Include="Entities\Ayarlar\AyarSayac.cs" />
+    <Compile Include="Entities\IstasyonAciklamalar\IstasyonAciklama.cs" />
+    <Compile Include="Entities\IstasyonBakimlar\IstasyonBakim.cs" />
+    <Compile Include="Entities\IstasyonBakimlar\IstasyonBakimParca.cs" />
+    <Compile Include="Entities\IstasyonKartlari\IstasyonKarti.cs" />
+    <Compile Include="Entities\IstasyonTakipler\IstasyonTakipBekleyenModel.cs" />
+    <Compile Include="Entities\IstasyonTakipler\IstasyonTakipHareket.cs" />
+    <Compile Include="Entities\IstasyonTakipler\Enumlar\IstasyonTakipHareketDetayTuru.cs" />
+    <Compile Include="Entities\IstasyonTakipler\Enumlar\IstasyonTakipHareketDurumuTuru.cs" />
+    <Compile Include="Entities\IstasyonTakipler\IstasyonTakipHareketLog.cs" />
+    <Compile Include="Entities\IstasyonTakipler\IstasyonTakipStokHareket.cs" />
+    <Compile Include="Entities\IstasyonTakipler\IstasyonTakipHareketDetay.cs" />
+    <Compile Include="Entities\Kullanicilar\Kullanici.cs" />
+    <Compile Include="Entities\MailAyarlari\MailAyar.cs" />
+    <Compile Include="Business\Manager\MikroStokCinsiManagers.cs" />
+    <Compile Include="Entities\MesajlLar\Mesajlar.cs" />
+    <Compile Include="Entities\Mikro\MikroStokBeden.cs" />
+    <Compile Include="Entities\Mikro\MikroStokHareketleri.cs" />
+    <Compile Include="Entities\Mikro\StokHareketleriModel.cs" />
+    <Compile Include="Entities\Mikro\MikroSiparis.cs" />
+    <Compile Include="Entities\Mikro\MikroSiparisHareket.cs" />
+    <Compile Include="Entities\OperasyonKartlar\OperasyonKarti.cs" />
+    <Compile Include="Entities\Personeller\Personel.cs" />
+    <Compile Include="Entities\Raporlar\IstasyonRaporlari\IstasyonRaporModel.cs" />
+    <Compile Include="Entities\Raporlar\IstasyonRaporlari\IstasyonRaporHareketModel.cs" />
+    <Compile Include="Entities\Raporlar\IstasyonRaporlari\IstasyonRaporToplamModel.cs" />
+    <Compile Include="Entities\Receteler\ReceteAna.cs" />
+    <Compile Include="Entities\Receteler\ReceteDetay.cs" />
+    <Compile Include="Entities\ReceteGruplar\ReceteGrup.cs" />
+    <Compile Include="Entities\ReceteGruplar\ReceteGrupDetay.cs" />
+    <Compile Include="Entities\ReceteIstasyonlar\ReceteIstasyon.cs" />
+    <Compile Include="Entities\ReceteIstasyonlar\ReceteIstasyonCari.cs" />
+    <Compile Include="Entities\Receteler\ReceteOperasyon.cs" />
+    <Compile Include="Entities\ReceteStoklar\ReceteStok.cs" />
+    <Compile Include="Entities\ReceteStoklar\ReceteStokRenkBeden.cs" />
+    <Compile Include="Entities\ReceteIstasyonlar\ReceteyeBagliIstasyon.cs" />
+    <Compile Include="Entities\Siparisler\Siparis.cs" />
+    <Compile Include="Entities\Siparisler\SiparisHareket.cs" />
+    <Compile Include="Entities\Siparisler\SiparisHareketDetay.cs" />
+    <Compile Include="DataAccess\Siparisler\SiparisHareketDetayDal.cs" />
+    <Compile Include="Entities\UretimAciklamalar\AciklamaDeger.cs" />
+    <Compile Include="Entities\SmsAyarlar\SmsAyar.cs" />
+    <Compile Include="Entities\UretimEmirler\UretimEmri.cs" />
+    <Compile Include="Entities\UretimIstasyonlar\UretimIstasyon.cs" />
+    <Compile Include="Entities\UretimIstasyonlar\UretimIstasyonHareket.cs" />
+    <Compile Include="Entities\UretimKontroller\UretimKontrol.cs" />
+    <Compile Include="Entities\UretimOperasyonlar\UretimOperasyon.cs" />
+    <Compile Include="Entities\UretimOperasyonlar\UretimOperasyonHareket.cs" />
+    <Compile Include="Entities\UretimOperasyonlar\UretimOperasyonHareketDetay.cs" />
+    <Compile Include="Entities\UretimStoklar\UretimStok.cs" />
+    <Compile Include="Entities\Models\DepoSevkModel.cs" />
+    <Compile Include="Entities\Models\MailEklentiModel.cs" />
+    <Compile Include="Entities\Models\MikroReceteHareketModel.cs" />
+    <Compile Include="Entities\Models\MikroReceteModel.cs" />
+    <Compile Include="Entities\Models\MikroStokStandartMaliyetModel.cs" />
+    <Compile Include="Entities\Models\OperasyonKalanKontrolModel.cs" />
+    <Compile Include="Entities\Models\ReceteMaliyetGenelDetayModel.cs" />
+    <Compile Include="Entities\Models\ReceteMaliyetGenelToplamModel.cs" />
+    <Compile Include="Entities\Models\UretimEmriKayitModelRecete.cs" />
+    <Compile Include="Entities\Models\UretimIstasyonTakipDetayModel.cs" />
+    <Compile Include="Entities\Models\UretimIstasyonTakipModel.cs" />
+    <Compile Include="Entities\Models\KayitSilKontrolModel.cs" />
+    <Compile Include="Entities\Mikro\MikroCari.cs" />
+    <Compile Include="Entities\Models\ReceteGrupKayitmodel.cs" />
+    <Compile Include="Entities\Models\ReceteKayitModel.cs" />
+    <Compile Include="Entities\Mikro\MikroStok.cs" />
+    <Compile Include="Entities\IEntity.cs" />
+    <Compile Include="Entities\Geneller\Genel.cs" />
+    <Compile Include="Entities\Models\ReceteOperasyonKayitModel.cs" />
+    <Compile Include="Entities\Siparisler\SiparisHareketModel.cs" />
+    <Compile Include="Entities\Models\SiparisKayitModel.cs" />
+    <Compile Include="Entities\Mikro\MikroStokRenk.cs" />
+    <Compile Include="Entities\Models\UretimEmriKayitModelSiparis.cs" />
+    <Compile Include="Entities\Models\UretimTakipDetayModelV2.cs" />
+    <Compile Include="Entities\Models\UretimTakipModelV2.cs" />
+    <Compile Include="Entities\UretimStoklar\UretimStokFis.cs" />
+    <Compile Include="Entities\UretimStoklar\UretimStokFisHareket.cs" />
+    <Compile Include="Entities\UretimStoklar\UretimStokFisModel.cs" />
+    <Compile Include="Entities\UretimTalepler\UretimTalep.cs" />
+    <Compile Include="Entities\UretimTalepler\UretimTalepHareket.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

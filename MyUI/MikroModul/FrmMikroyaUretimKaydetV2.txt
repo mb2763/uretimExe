@@ -1,0 +1,482 @@
+﻿using My.Business.Manager;
+using My.Business.Service.IstasyonTakipler;
+using My.Business.Service.UretimStoklar;
+using My.Entities.Ayarlar;
+using My.Entities.IstasyonTakipler;
+using My.Entities.Mikro;
+using My.Entities.Models;
+using My.Entities.UretimStoklar;
+using My.Kontrol.Formlar;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace MyUI.MikroModul {
+    public partial class FrmMikroyaUretimKaydetV2 : MyFrmKayit {
+
+        private SiparisManager _mngSip;
+        private MikroKayitManager _mngMikroKayit;
+        private ReceteManager _mngRecete;
+        private SiparisKayitModel _mdl;
+        private List<IstasyonTakipStokHareketKullanilan> _listStok;
+        private List<IstasyonTakipHareketDetay> _listStokFire; 
+        private IIstasyonTakipStokHareketService _srvStok = Ortak.DbPro.IstasyonTakipStokHareket;
+        private IIstasyonTakipHareketDetayService _srvHrDetay = Ortak.DbPro.IstasyonTakipHareketDetay;
+      
+        public Guid? SipId = Guid.Empty;
+        public string Turu = "Siparis";
+        public FrmMikroyaUretimKaydetV2() {
+            InitializeComponent();
+            this.Load += Frm_Load;
+        }
+        private void Frm_Load(object sender, System.EventArgs e) {
+            _mngSip = new SiparisManager(Ortak.DbPro);
+            _mngMikroKayit = new MikroKayitManager(Ortak.DbPro, Ortak.DbMikro);
+            _mngRecete = new ReceteManager(Ortak.DbPro);
+            Bagla();
+            BaglaDetaylar();
+            BaglaStoklar();
+            AcilisBittimi = true;
+        }
+        private void Bagla() {
+            if (_mngSip == null) {
+                _mngSip = new SiparisManager(Ortak.DbPro);
+            }
+            YeniKayit = false;
+            var rs = _mngSip.GetSiparis(SipId);
+            if (!rs.Success) {
+                MesajHata(rs.Message);
+                return;
+            }
+            _mdl = rs.Data;
+            myView1.SutunGizle("Id");
+
+            AktarTextlere();
+        }
+        private void BaglaStoklar() {
+            var rs = _srvStok.GetViewListKullanimWherePartiLot(" and   IstSHr.SipId =  '" + SipId + "' ");
+            if (!rs.Success) {
+                MesajHata(rs.Message);
+                return;
+            }
+            _listStok = rs.Data.ToList();
+            myGrid2.DataSource = _listStok;
+            myView2.SutunGizle("Id");
+            myGrid2.GridYerlesimYukle();
+        }
+        private void BaglaDetaylar() {
+
+            //  IstasyonTakipHareketDetay DT    UretimIstasyon UrI UretimOperasyon   UrO  
+            var rs = _srvHrDetay.GetViewListStokFire(" and UrI.SipId = '" + SipId + "' ");
+            if (!rs.Success) {
+                MesajHata(rs.Message);
+                return;
+            }
+            _listStokFire = rs.Data.ToList();
+        }
+
+        private void AktarTextlere() {
+            Turu = _mdl.Siparis.Turu;
+            TxtSiparisKodu.Text = _mdl.Siparis.SiparisKodu;
+            TxtCariKodu.Text = _mdl.Siparis.CariKodu;
+            TxtCariUnvani.Text = _mdl.Siparis.CariUnvani;
+            TxtTarih.Text = _mdl.Siparis.Tarih.ToString();
+            TxtTeslimTarihi.Text = _mdl.Siparis.TeslimTarihi.ToString();
+            GridBagla();
+        }
+        private void GridBagla() {
+            myGrid1.DataSource = null;
+            myGrid1.DataSource = _mdl.Hareketler;
+            myGrid1.GridYerlesimYukle();
+        }
+
+        private void BtnKaydet_Click(object sender, System.EventArgs e) {
+            if (_mdl.Siparis.Ent) {
+                if (!MesajSor("Uretim Daha Once Mikroya Kayıt Edilmiş Devam Ederseniz Eski fişleri silmeniz Gerekir")) {
+                    return;
+                }
+            }
+            Kaydet(TxtSiparisKodu.Text, Ortak.MikroEntAyarlar.Where(c => c.Modul == "MikroEntegre").ToList());
+
+        }
+        private void Kaydet(string belgeNo, List<Ayar> MikroEntAyarlar) {
+
+            bool stdMaliyet = false;
+            bool rctMaliyet = false;
+            var std = MikroEntAyarlar.Find(c => c.Modul == "MikroEntegre" && c.Grup == "UretimStokCikisFisi" && c.Kodu == "STANDARTMALIYET");
+            if (std != null) {
+                stdMaliyet = Convert.ToBoolean(Convert.ToInt16(std.Deger));
+            }
+            var rct = MikroEntAyarlar.Find(c => c.Modul == "MikroEntegre" && c.Grup == "UretimStokCikisFisi" && c.Kodu == "RECETEMALIYET");
+            if (rct != null) {
+                rctMaliyet = Convert.ToBoolean(Convert.ToInt16(rct.Deger));
+            }
+            bool stdMaliyetFr = false;
+            bool rctMaliyetFr = false;
+            var stdFr = MikroEntAyarlar.Find(c => c.Modul == "MikroEntegre" && c.Grup == "UretimStokCikisFisi" && c.Kodu == "STANDARTMALIYET");
+            if (stdFr != null) {
+                stdMaliyetFr = Convert.ToBoolean(Convert.ToInt16(stdFr.Deger));
+            }
+            var rctFr = MikroEntAyarlar.Find(c => c.Modul == "MikroEntegre" && c.Grup == "UretimStokCikisFisi" && c.Kodu == "RECETEMALIYET");
+            if (rctFr != null) {
+                rctMaliyetFr = Convert.ToBoolean(Convert.ToInt16(rctFr.Deger));
+            }
+
+            List<StokHareketleriModel> _lisStokVirmanFisi = new List<StokHareketleriModel>();
+            List<StokHareketleriModel> _lisUretimHareketFisi = new List<StokHareketleriModel>();
+          
+            List<StokHareketleriModel> _lisUrunGiris = new List<StokHareketleriModel>();
+            List<StokHareketleriModel> _lisUrunFireGiris = new List<StokHareketleriModel>();
+            List<StokHareketleriModel> _lisStokCikis = new List<StokHareketleriModel>();
+            List<StokHareketleriModel> _lisStokFireCikis = new List<StokHareketleriModel>();
+
+            MikroFisGirisTurleri UretimUrunGirisFisiTuru = MikroFisGirisTurleri.StokVirmanFisi;
+            var ft_UUGFT = MikroEntAyarlar.Find(c => c.Modul == "MikroEntegre" && c.Grup == "FisTuru" && c.Kodu == "UretimUrunGirisFisiTuru");
+            if (ft_UUGFT != null) {
+                UretimUrunGirisFisiTuru = MikroKayitFisTurleri.GetMikroGirisFisiTuru(ft_UUGFT.Deger);
+            }
+            MikroFisGirisTurleri UretimUrunFireGirisFisiTuru = MikroFisGirisTurleri.StokVirmanFisi;
+            var ft_UUFGFT = MikroEntAyarlar.Find(c => c.Modul == "MikroEntegre" && c.Grup == "FisTuru" && c.Kodu == "UretimUrunFireGirisFisiTuru");
+            if (ft_UUFGFT != null) {
+                UretimUrunFireGirisFisiTuru = MikroKayitFisTurleri.GetMikroGirisFisiTuru(ft_UUFGFT.Deger);
+            }
+            MikroFisCikisTurleri UretimStokCikisFisiTuru = MikroFisCikisTurleri.StokVirmanFisi;
+            var ft_USCFT = MikroEntAyarlar.Find(c => c.Modul == "MikroEntegre" && c.Grup == "FisTuru" && c.Kodu == "UretimStokCikisFisiTuru");
+            if (ft_USCFT != null) {
+                UretimStokCikisFisiTuru = MikroKayitFisTurleri.GetMikroCikisFisiTuru(ft_USCFT.Deger);
+            }
+            MikroFisCikisTurleri UretimStokFireCikisFisiTuru = MikroFisCikisTurleri.StokVirmanFisi;
+            var ft_USFCFT = MikroEntAyarlar.Find(c => c.Modul == "MikroEntegre" && c.Grup == "FisTuru" && c.Kodu == "UretimStokFireCikisFisiTuru");
+            if (ft_USFCFT != null) {
+                UretimStokFireCikisFisiTuru = MikroKayitFisTurleri.GetMikroCikisFisiTuru(ft_USFCFT.Deger);
+            } 
+            foreach (var itm in _mdl.Hareketler) { 
+                double miktar = itm.UretimMiktari + itm.FireMiktari;
+                if (string.IsNullOrEmpty(itm.Lot)) {
+                    itm.Lot = "0";
+                }
+                var sth = new StokHareketleriModel() {
+                    sth_Guid = Guid.NewGuid(),
+                    sth_aciklama = "UretimGirisi",
+                    sth_belge_no = belgeNo,
+                    sth_belge_tarih = DateTime.Now,
+                    sth_birim_pntr = 1,
+                    sth_malkbl_sevk_tarihi = DateTime.Now,
+                    sth_miktar = miktar,
+                    sth_miktar2 = miktar,
+                    sth_stok_kod = itm.StokKodu,
+                    sth_tarih = DateTime.Now,
+                    sth_parti_kodu = itm.Parti,
+                    sth_lot_no = itm.Lot.ToInt32(),
+                    sth_tip = 0
+                };
+
+                sth = _mngMikroKayit.SetUretimUrunGirisFisiAyar(sth, MikroEntAyarlar);
+                if (UretimUrunGirisFisiTuru == MikroFisGirisTurleri.StokVirmanFisi) {
+                    _lisStokVirmanFisi.Add(sth);
+                }
+                else if (UretimUrunGirisFisiTuru == MikroFisGirisTurleri.UretimHareketFisi) {
+                    _lisUretimHareketFisi.Add(sth);
+                }
+                else {
+                    _lisUrunGiris.Add(sth);
+                }
+                if (itm.FireMiktari != null && itm.FireMiktari > 0) {
+                    var sthF = new StokHareketleriModel() {
+                        sth_Guid = Guid.NewGuid(),
+                        sth_aciklama = "UretimFireGirisi",
+                        sth_belge_no = belgeNo,
+                        sth_belge_tarih = DateTime.Now,
+                        sth_birim_pntr = 1,
+                        sth_malkbl_sevk_tarihi = DateTime.Now,
+                        sth_miktar = itm.FireMiktari,
+                        sth_miktar2 = itm.FireMiktari,
+                        sth_stok_kod = itm.StokKodu,
+                        sth_tarih = DateTime.Now,
+                        sth_parti_kodu = itm.Parti,
+                        sth_lot_no = itm.Lot.ToInt32(),
+                        sth_tip = 1
+                    };
+                    sthF = _mngMikroKayit.SetUretimUrunFireGirisFisiAyar(sthF, MikroEntAyarlar);
+                    if (UretimUrunFireGirisFisiTuru == MikroFisGirisTurleri.StokVirmanFisi) {
+                        _lisStokVirmanFisi.Add(sthF);
+                    }
+                    else if (UretimUrunGirisFisiTuru == MikroFisGirisTurleri.UretimHareketFisi) {
+                        _lisUretimHareketFisi.Add(sthF);
+                    }
+                    else {
+                        _lisUrunFireGiris.Add(sthF);
+                    }
+                }
+
+            }
+            double hesaplananMiktar = 0;
+            double hrkMiktar = 0;
+            foreach (var itm in _listStok) {
+                if (string.IsNullOrEmpty(itm.Lot)) {
+                    itm.Lot = "0";
+                }
+                if (itm.KullanilanMiktar > 0) {
+                    hesaplananMiktar = 0;
+                    hrkMiktar = 0;
+                    foreach (var it1 in _mdl.Hareketler) {
+                        if (itm.SipHId == it1.Id) {
+                            hrkMiktar = it1.UretimMiktari + it1.FireMiktari; break;
+                        }
+                    }
+                    hesaplananMiktar = itm.Carpan * hrkMiktar;
+                    var sth = new StokHareketleriModel() {
+                        sth_Guid = Guid.NewGuid(),
+                        sth_aciklama = "Uretim Stok Cikis",
+                        sth_belge_no = belgeNo,
+                        sth_belge_tarih = DateTime.Now,
+                        sth_birim_pntr = 1,
+                        sth_malkbl_sevk_tarihi = DateTime.Now,
+                        sth_miktar = hesaplananMiktar,
+                        sth_miktar2 = hesaplananMiktar,
+                        sth_stok_kod = itm.StokKodu,
+                        sth_tarih = DateTime.Now,
+                        sth_parti_kodu = itm.Parti,
+                        sth_lot_no = itm.Lot.ToInt32(),
+                        sth_tip = 1
+                    };
+                    sth = _mngMikroKayit.SetUretimStokCikisFisiAyar(sth, MikroEntAyarlar);
+                    if (UretimStokCikisFisiTuru == MikroFisCikisTurleri.StokVirmanFisi) {
+                        _lisStokVirmanFisi.Add(sth);
+                    }
+                    else if (UretimUrunGirisFisiTuru == MikroFisGirisTurleri.UretimHareketFisi) {
+                        _lisUretimHareketFisi.Add(sth);
+                    }
+                    else {
+                        _lisStokCikis.Add(sth);
+                    }
+                }
+
+            }
+            foreach (var itm in _listStokFire) {
+                if (string.IsNullOrEmpty(itm.Lot)) {
+                    itm.Lot = "0";
+                }
+                if (itm.FireMiktar > 0) {
+                    var sth = new StokHareketleriModel() {
+                        sth_Guid = Guid.NewGuid(),
+                        sth_aciklama = "Uretim Fire Stok Cikis",
+                        sth_belge_no = belgeNo,
+                        sth_belge_tarih = DateTime.Now,
+                        sth_birim_pntr = 1,
+                        sth_malkbl_sevk_tarihi = DateTime.Now,
+                        sth_miktar = itm.FireMiktar,
+                        sth_miktar2 = itm.FireMiktar,
+                        sth_stok_kod = itm.StokKodu,
+                        sth_tarih = DateTime.Now,
+                        sth_parti_kodu = itm.Parti,
+                        sth_lot_no = itm.Lot.ToInt32(),
+                        sth_tip = 1
+                    };
+                    sth = _mngMikroKayit.SetUretimStokFireCikisFisiAyar(sth, MikroEntAyarlar);
+                    if (UretimStokFireCikisFisiTuru == MikroFisCikisTurleri.StokVirmanFisi) {
+                        _lisStokVirmanFisi.Add(sth);
+                    }
+                    else if (UretimUrunGirisFisiTuru == MikroFisGirisTurleri.UretimHareketFisi) {
+                        _lisUretimHareketFisi.Add(sth);
+                    }
+                    else {
+                        _lisStokFireCikis.Add(sth);
+                    }
+                }
+
+            }
+            // sto_standartmaliyet 
+            foreach (var itm in _lisStokCikis)// fiyat al
+            {
+                var rs = _mngMikroKayit.GetMikroStokMaliyetListWhere(" where S.sto_kod='" + itm.sth_stok_kod + "' ");
+                if (!rs.Success) {
+                    MesajHata(rs.Message);
+                    return;
+                }
+                if (stdMaliyet) {
+                    var data = rs.Data.FirstOrDefault();
+                    if (!string.IsNullOrEmpty(data.STANDARTMALIYET)) {
+                        itm.Fiyat = Convert.ToDouble(data.STANDARTMALIYET);
+                    }
+                }
+                else if (rctMaliyet) {
+                    var data = rs.Data.FirstOrDefault();
+                    if (!string.IsNullOrEmpty(data.RECETEMALIYET)) {
+                        itm.Fiyat = Convert.ToDouble(data.RECETEMALIYET);
+                    }
+                }
+            }
+
+            // sto_standartmaliyet 
+            foreach (var itm in _lisStokFireCikis)// fiyat al
+            {
+                var rs = _mngMikroKayit.GetMikroStokMaliyetListWhere(" where S.sto_kod='" + itm.sth_stok_kod + "' ");
+                if (!rs.Success) {
+                    MesajHata(rs.Message);
+                    return;
+                }
+                if (stdMaliyetFr) {
+                    var data = rs.Data.FirstOrDefault();
+                    if (!string.IsNullOrEmpty(data.STANDARTMALIYET)) {
+                        itm.Fiyat = Convert.ToDouble(data.STANDARTMALIYET);
+                    }
+                }
+                else if (rctMaliyetFr) {
+                    var data = rs.Data.FirstOrDefault();
+                    if (!string.IsNullOrEmpty(data.RECETEMALIYET)) {
+                        itm.Fiyat = Convert.ToDouble(data.RECETEMALIYET);
+                    }
+                }
+            }
+
+            // MikroAyarFisTurleri  , MikroFisCikisTurleri , MikroFisGirisTurleri
+            List<MikroStokHareketleri> _lisMikro = new List<MikroStokHareketleri>();
+            // ilk satırdan seri sira alinacak giriş fişini öne al
+            if (_lisUrunGiris.Count > 0) {
+                //if (UretimUrunGirisFisiTuru == MikroFisGirisTurleri.StokAcilisFisiDepoGiris) {
+                //    var rs1 = _mngMikroKayit.ConvertStokAcilisFisiDepoGiris(_lisUrunGiris, Ortak.MikroEntAyarlar);
+                //    if (!rs1.Success) { MesajHata(rs1.Message);   return; }  _lisMikro.AddRange(rs1.Data); } else 
+                if (UretimUrunGirisFisiTuru == MikroFisGirisTurleri.UretimdenGirisFisi) {
+                    var rs1 = _mngMikroKayit.ConvertUretimdenGirisFisi(_lisUrunGiris, Ortak.MikroEntAyarlar);
+                    if (!rs1.Success) {
+                        MesajHata(rs1.Message);
+                        return;
+                    }
+                    _lisMikro.AddRange(rs1.Data);
+                }
+                else {
+                    // UretimUrunGirisFisiTuru == MikroFisGirisTurleri.SayimDepoGiris  
+                    var rs1 = _mngMikroKayit.ConvertSayimDepoGiris(_lisUrunGiris, Ortak.MikroEntAyarlar);
+                    if (!rs1.Success) {
+                        MesajHata(rs1.Message);
+                        return;
+                    }
+                    _lisMikro.AddRange(rs1.Data);
+                }
+            }
+            else if (_lisStokVirmanFisi.Count > 0) {
+                var rs1 = _mngMikroKayit.ConvertStokVirmanFisi(_lisStokVirmanFisi, Ortak.MikroEntAyarlar);
+                if (!rs1.Success) {
+                    MesajHata(rs1.Message);
+                    return;
+                }
+                _lisMikro.AddRange(rs1.Data);
+            }
+            else if (_lisUretimHareketFisi.Count > 0) {
+                var rs1 = _mngMikroKayit.ConvertUretimHareketFisi(_lisUretimHareketFisi, Ortak.MikroEntAyarlar);
+                if (!rs1.Success) {
+                    MesajHata(rs1.Message);
+                    return;
+                }
+                _lisMikro.AddRange(rs1.Data);
+            }
+            else {
+                MesajHata("Aktarılacak Ürün Bulunamadı");
+                return;
+            }
+            /* fire gir */
+            if (_lisUrunFireGiris.Count > 0) {
+                //if (UretimUrunFireGirisFisiTuru == MikroFisGirisTurleri.StokAcilisFisiDepoGiris) { var rs2 = _mngMikroKayit.ConvertStokAcilisFisiDepoGiris(_lisUrunFireGiris, Ortak.MikroEntAyarlar);    if (!rs2.Success) {  MesajHata(rs2.Message);  return;  }  _lisMikro.AddRange(rs2.Data); } else 
+                if (UretimUrunFireGirisFisiTuru == MikroFisGirisTurleri.UretimdenGirisFisi) {
+                    var rs2 = _mngMikroKayit.ConvertUretimdenGirisFisi(_lisUrunFireGiris, Ortak.MikroEntAyarlar);
+                    if (!rs2.Success) {
+                        MesajHata(rs2.Message);
+                        return;
+                    }
+                    _lisMikro.AddRange(rs2.Data);
+                }
+                else {
+                    // UretimUrunFireGirisFisiTuru == MikroFisGirisTurleri.SayimDepoGiris  
+                    var rs2 = _mngMikroKayit.ConvertSayimDepoGiris(_lisUrunFireGiris, Ortak.MikroEntAyarlar);
+                    if (!rs2.Success) {
+                        MesajHata(rs2.Message);
+                        return;
+                    }
+                    _lisMikro.AddRange(rs2.Data);
+                }
+            }
+            /* Stok cik */
+            if (_lisStokCikis.Count > 0) {
+                //if (UretimStokCikisFisiTuru == MikroFisCikisTurleri.StokAcilisFisiDepoCikis) { var rs3 = _mngMikroKayit.ConvertStokAcilisFisiDepoCikis(_lisStokCikis, Ortak.MikroEntAyarlar);if (!rs3.Success) {    MesajHata(rs3.Message);   return; }   _lisMikro.AddRange(rs3.Data); } else
+                if (UretimStokCikisFisiTuru == MikroFisCikisTurleri.UretimeCikisFisi) {
+                    var rs3 = _mngMikroKayit.ConvertUretimeCikisFisi(_lisStokCikis, Ortak.MikroEntAyarlar);
+                    if (!rs3.Success) {
+                        MesajHata(rs3.Message);
+                        return;
+                    }
+                    _lisMikro.AddRange(rs3.Data);
+                }
+                else {
+                    // UretimStokCikisFisiTuru == MikroFisCikisTurleri.SarfDepoCikis  
+                    var rs3 = _mngMikroKayit.ConvertSarfDepoCikis(_lisStokCikis, Ortak.MikroEntAyarlar);
+                    if (!rs3.Success) {
+                        MesajHata(rs3.Message);
+                        return;
+                    }
+                    _lisMikro.AddRange(rs3.Data);
+                }
+            }
+            /* Stok Fire cik */
+            if (_lisStokFireCikis.Count > 0) {
+                //if (UretimStokFireCikisFisiTuru == MikroFisCikisTurleri.StokAcilisFisiDepoCikis) { var rs4 = _mngMikroKayit.ConvertStokAcilisFisiDepoCikis(_lisStokFireCikis, Ortak.MikroEntAyarlar); if (!rs4.Success) {  MesajHata(rs4.Message);  return;  }  _lisMikro.AddRange(rs4.Data); } else
+                if (UretimStokFireCikisFisiTuru == MikroFisCikisTurleri.UretimeCikisFisi) {
+                    var rs4 = _mngMikroKayit.ConvertUretimeCikisFisi(_lisStokFireCikis, Ortak.MikroEntAyarlar);
+                    if (!rs4.Success) {
+                        MesajHata(rs4.Message);
+                        return;
+                    }
+                    _lisMikro.AddRange(rs4.Data);
+                }
+                else {
+                    // UretimStokFireCikisFisiTuru == MikroFisCikisTurleri.SarfDepoCikis  
+                    var rs4 = _mngMikroKayit.ConvertSarfDepoCikis(_lisStokFireCikis, Ortak.MikroEntAyarlar);
+                    if (!rs4.Success) {
+                        MesajHata(rs4.Message);
+                        return;
+                    }
+                    _lisMikro.AddRange(rs4.Data);
+                }
+            }
+
+            MikroyaKaydet(_lisMikro);
+
+
+        }
+
+
+        private bool FisConvert(List<MikroStokHareketleri> _lisMikro) {
+
+            return true; 
+        }
+        private bool FisConvert(List<MikroStokHareketleri> _lisMikro) {
+
+            return true; 
+        }
+
+        private void MikroyaKaydet(List<MikroStokHareketleri> _lisMikro) {
+
+            var rsKyt = _mngMikroKayit.StokHareketKaydet(_lisMikro);
+            if (!rsKyt.Success) {
+                MesajHata(rsKyt.Message);
+                return;
+            }
+            else {
+                string seri = _lisMikro[0].sth_evrakno_seri;
+                string sira = _lisMikro[0].sth_evrakno_sira.ToString();
+                string sonseri = _lisMikro[_lisMikro.Count - 1].sth_evrakno_seri.ToString();
+                string sonsira = _lisMikro[_lisMikro.Count - 1].sth_evrakno_sira.ToString();
+                var son = _mngSip.SiparisEntGuncelle(_mdl.Siparis.Id, seri, sira, sonseri, sonsira);
+                if (!son.Success) {
+                    MesajHata(son.Message);
+                    return;
+                }
+                MesajBilgi("KayıtEdildi");
+                BtnKaydet.Enabled = false;
+            }
+        }
+
+
+    }
+}
+
