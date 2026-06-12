@@ -6,6 +6,30 @@ Mobilya/uretim isletmeleri icin uretim takip, istasyon yonetimi ve recete sistem
 
 Assembly adi: `CepPatronERP.exe`
 
+## Iliskili Projeler
+
+UretimV4, ayni uretim ekosistemini paylasan **3 projeden** biridir. Ucu de ayni `My/` (Business + DataAccess + Entities) katman desenini ve **ayni iki veritabanini** kullanir.
+
+| Proje | Tur | Rol | DB Erisimi |
+|-------|-----|-----|-----------|
+| **UretimV4** *(bu proje)* (`D:\Projelerimmm\UretimV4`) | WinForms masaustu (.NET Framework 4.6.1, CepPatronERP.exe) | Ofis/yonetim: uretim emri, recete, istasyon tanimlama, raporlama | DB'ye **dogrudan** (Dapper, `DataBaseSettings.ini`) |
+| **WebUretim ApiFeza V1** (`D:\Projelerimmm\WebUretim ApiFeza V1`) | ASP.NET Core 6.0 REST API (MyApi.exe, JWT + Swagger, Windows Service) | Tablet/web istemcileri icin ortak REST API; Mikro<->Uretim siparis aktarim | DB'ye **dogrudan** (Dapper); `ProConn` + `MikroConn` |
+| **WebUretim TabletV2** (`D:\Projelerimmm\WebUretim TabletV2`) | ASP.NET Core 7.0 Blazor Server (saha tablet UI, DevExpress.Blazor 23.2) | Saha operatorleri: istasyon takip baslat/durdur/bitir, mal kabul, kontrol, barkod | DB'ye **dogrudan** (EF Core + Dapper); API'yi normalde kullanmaz |
+
+### Ortak Veritabanlari (FEZA kurulumu)
+Ucu de ayni SQL Server uzerindeki su iki DB'yi paylasir:
+- **Uretim DB**: `UretimV3_FEZA` — uretim emirleri, receteler, istasyonlar, kullanicilar
+  (UretimV4: `Uretim`/DbPro · API: `ProConn` · Tablet: `programconnection`)
+- **Mikro DB**: `MikroDB_V16_FEZA24` — Mikro ERP stok, siparis, cari
+  (UretimV4: `Mikro`/DbMikro · API: `MikroConn` · Tablet: `mikroconnection`)
+
+> UretimV4 baglanti bilgisini `MyUI\bin\Debug\Ayarlar\DataBaseSettings.ini`'den (sifre URL-encoded), web projeleri `appsettings.json`'dan alir. Uc projenin de **ayni DB'ye yazdigi** hareketler (UretimIstasyon, IstasyonTakipHareket, UretimStokFis, UretimOperasyonHareket vb.) digerlerinde aninda gorunur.
+
+### Entegrasyon Notlari
+- **TabletV2 ve UretimV4 API'yi kullanmaz**; ikisi de DB'ye dogrudan baglanir. ApiFeza V1 daha cok Mikro<->Uretim aktarim ve harici/eski istemciler icindir.
+- Ayni `Kullanici` tablosu paylasilir; ancak sifre sifreleme mekanizmasi projeden projeye farkli olabilir (UretimV4 AES; API icin `UserService` kontrol edilmeli).
+- Her projenin kendi detayli `CLAUDE.md`'si vardir (ilgili klasorlerde).
+
 ## Teknoloji Yigini
 
 - **Framework**: .NET Framework 4.6.1 (WinForms, `WinExe`)
