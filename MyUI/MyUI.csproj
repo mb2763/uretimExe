@@ -738,8 +738,13 @@
       <DependentUpon>SiparisPanelControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Ortak.cs" />
+    <Compile Include="Tema.cs" />
     <Compile Include="AyarVeGenelModul\OrtakLis.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Yardim\HelpItem.cs" />
+    <Compile Include="Yardim\HelpMessageFilter.cs" />
+    <Compile Include="Yardim\HelpManager.cs" />
+    <Compile Include="Yardim\FrmYardim.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UretimOperasyonModule\OperasyonCardControlV2.cs">
       <SubType>UserControl</SubType>
@@ -1082,6 +1087,24 @@
     <Content Include="CepPatron64.ico" />
     <Content Include="import-export.ico" />
     <Content Include="MikroModul\FrmMikroyaUretimKaydetV2.txt" />
+    <Content Include="Yardim\help-uretim.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resimler\senkron-login.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resimler\senkron-header.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resimler\senkron-bg.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resimler\senkron-menu-bg.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resimler\senkron-form-bg.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\Turuncu_list_of_parts_32px.png" />
     <None Include="Resources\Turuncu_add_list_32px.png" />
     <None Include="Resources\Turuncu_page_32px1.png" />

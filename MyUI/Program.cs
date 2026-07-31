@@ -14,7 +14,8 @@ namespace MyUI
             // My.Kontrol.KeyKontrol.SetKey("6E41wNq6tSPznjyult5Kriij5157sLOkcWA8BSdodCk="); 
              My.Kontrol.KeyKontrol.SetKey("ldSvAgr7jI7R+E4Yg+gnbzpt+gI4WVn+coNELpxlLjs="); 
             Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false); 
+            Application.SetCompatibleTextRenderingDefault(false);
+            MyUI.Yardim.HelpManager.Baslat();
             Application.Run(new FrmAna() { Opacity=0.0});
         }        
     }

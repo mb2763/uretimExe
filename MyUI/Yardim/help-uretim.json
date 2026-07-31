@@ -1,0 +1,1308 @@
+{
+  "FrmUretimEmriListesi": {
+    "Baslik": "Uretim Emri Listesi",
+    "Amac": "Uretim emirlerini (is emri) tarih, kod, cari, tur, recete ve duruma gore filtreleyip listeler. Ust grid uretim emrini, alt grid o emrin operasyonlarini gosterir. Yeni uretim emri olusturma ve duzenlemenin giris noktasidir.",
+    "Onkosul": "Sistemde siparis ve recete tanimlari bulunmali; combolar UretimEmri tablosundan beslenir. Siparis ekranindan tek siparise kilitli (SiparisKodundanFiltrele) acilabilir.",
+    "Sonra": "Satira cift tiklayinca FrmUretimEmriED edit modunda acilir; tablo degistirmez, salt listeleme + navigasyon yapar.",
+    "Butonlar": [
+      "Ara — filtreye gore UretimEmri listesini ceker (acilista otomatik calisir)",
+      "Temizle — tum filtre alanlarini sifirlar",
+      "Yazdir — secili emri UretimEmriListesi raporu olarak basar",
+      "Siparisten Ekle — FrmUretimEmriED'yi Siparis turuyle acar",
+      "Receteden Ekle — FrmUretimEmriED'yi Recete turuyle acar",
+      "Hepsi / Beklemede / Uretimde / Hazir — durum sekme filtreleri (acilis: Uretimde)",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Dogrudan yok; operasyon Sira mantigi ED ve takip formlarinda devreye girer.",
+    "Notlar": "Durum combosu gizli; filtre artik sekme butonlariyla yonetilir."
+  },
+  "FrmUretimEmriED": {
+    "Baslik": "Uretim Emri Acilis / Duzenleme",
+    "Amac": "Tek bir uretim emrinin (is emrinin) olusturuldugu/duzenlendigi ana ekran. Operasyonlar, sarf stoklari ve baslatilmis hareketleri 3 sekmede yonetir; uretim akisini fiilen baslatir ve istasyon gruplama secimini yapar.",
+    "Onkosul": "IdGuid (mevcut emir) veya SipId set edilmis olmali; ikisi de bossa acilista siparis secimi zorunludur (secilmezse form kapanir). Yeni acilista operasyonlar siparis hareketleri x recete operasyonlarindan uretilir.",
+    "Sonra": "Kaydet UretimEmri/UretimOperasyon/UretimStok'u transaction'da yazar ve Uretim_MiktarGuncelle calistirir. Baslat ise Sira<=1 operasyonlara hareket acar (Uretim_PlanlananGuncelle + SonrakiIstasyonaGonder).",
+    "Butonlar": [
+      "Kaydet — emri ve alt kayitlari transaction'da yazar, miktarlari gunceller",
+      "Uretimi Kaydet ve Baslat — kaydeder, sonra Sira<=1 operasyonlar icin uretimi baslatir",
+      "Sil — baslatilmis hareket yoksa emri ve alt kayitlari siler, siparisi YeniKayit yapar",
+      "Baslatilmis Uretimleri Sil — operasyon hareketlerini temizler",
+      "Uretime Ait Tum Kayitlari Sil — emre bagli tum hareket/istasyon/takip kayitlarini siler",
+      "Cari Temizle — cari kodu/unvani alanlarini bosaltir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Cekirdek ekran. Operasyonlar Sira ile uretilir; baslatma yalnizca Sira<=1 icindir. Istasyon grubu secilirse her operasyona tek UretimIstasyon olusturulur.",
+    "Notlar": "Istasyon gruplama yalnizca tek urun uretim emrinde kullanilabilir. UretimTuru: Siparis / Recete / MikroSiparis."
+  },
+  "FrmOperasyonTakip": {
+    "Baslik": "Operasyon Takip (Kart / Kanban)",
+    "Amac": "Tum aktif uretimi operasyon kodu bazinda canli kart gorunumunde gosterir. Her kart bekleyen ve uretimdeki is satirlarini ozetler; saha/yonetim icin neyin nerede oldugu panosudur.",
+    "Onkosul": "En az bir uretim emri baslatilmis, durumu Hazir olmayan, kapanmamis ve KalanMiktar>0 olan operasyonlar bulunmali; aksi halde kart cikmaz.",
+    "Sonra": "Veri degistirmez. Karttan bekleyen/uretimde detayina tiklayinca FrmOperasyonTakipDetaylar ilgili durumla acilir.",
+    "Butonlar": [
+      "Yenile — takip listesini yeniden ceker",
+      "Tum Operasyonlar — FrmOperasyonTakipDetaylar'i tum operasyonlarla acar",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Dolayli; kartlar operasyon (Sira) bazli toplam miktarlari yansitir, Sira gecislerini tetiklemez.",
+    "Notlar": "60 saniyede bir otomatik yenilenir; kartlar dinamik olarak operasyon koduna gore eklenir."
+  },
+  "FrmOperasyonTakipDetaylar": {
+    "Baslik": "Operasyon Takip Detaylar",
+    "Amac": "Secilen operasyonun is satirlarini grid olarak listeler ve uretim girisi / istasyona gonderme / detay hareket goruntuleme islemlerine kopru kurar.",
+    "Onkosul": "Operasyon + Durumu set edilerek acilmali (ya da tum operasyonlar / siparis filtresi). Satirin Id'si bos olmamali; baslatilmamis satirda islem yapilamaz.",
+    "Sonra": "Uretimde + Uretim Girisi: hareket secilip FrmUretimIstasyonUretimGir acilir. Beklemede + Istasyona Gonder: FrmUretimIstasyonED acilir. Her islem sonrasi form kapanir.",
+    "Butonlar": [
+      "Uretim Girisi / Istasyona Gonder — duruma gore uretim girisi veya istasyona gonderme akisini calistirir",
+      "Uretim Girisi (sag tik) — Uretimde durumunda hareket secip uretim girer",
+      "Istasyona Gonder (sag tik) — Beklemede durumunda istasyona gonderir",
+      "Detay Hareketler (sag tik) — secili satirin detay hareketlerini acar",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Dogrudan. Bekleyen satir onceki Sira operasyonu uretilmeden baslatilamaz; uretim girisi Sira N+1 operasyonun planlananini besler.",
+    "Notlar": "Form basligi acilista durum ve operasyon bilgisiyle set edilir."
+  },
+  "FrmUretimIstasyonTakip": {
+    "Baslik": "Istasyon Takip",
+    "Amac": "Acik (KalanMiktar>0) tum istasyonlarin ozet kartlarini gosterir. Her istasyon kodu icin tek kart cikar; planlanan/uretim/fire miktarlari toplanmis halde sunulur.",
+    "Onkosul": "Uretim emri ve operasyonlari olusturulmus, operasyona en az bir istasyon atanmis ve KalanMiktar>0 olmali; aksi halde bos placeholder kartlar gosterilir.",
+    "Sonra": "Salt okunur ozet panosudur; veri degistirmez. Kart buyutec ikonuna tiklayinca FrmUretimIstasyonTakipDetay acilir.",
+    "Butonlar": [
+      "Yenile — istasyon takip listesini yeniden ceker",
+      "Kart Buyutec — secili istasyonun detayini acar",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Kartlar istasyon kodu bazinda gruplanir (operasyon Sira ile degil); operasyon bilgisi kartta gosterilir.",
+    "Notlar": "Kart sayisi 9'a tamamlanir (bos kartlar eklenir). Bu ekranda kayit yapilmaz."
+  },
+  "FrmUretimIstasyonTakipDetay": {
+    "Baslik": "Istasyon Takip Detay",
+    "Amac": "Tek bir istasyon kodu (ve fason ayrimi) icindeki tum acik istasyon hareketlerini grid olarak listeler; siparis/is emri, operasyon, recete, miktarlar ve baslangic tarihiyle satir bazinda detay verir.",
+    "Onkosul": "IstasyonKodu ve Fason property'leri set edilmis olmali (genelde FrmUretimIstasyonTakip kartindan gelir).",
+    "Sonra": "Salt okunur grid; veritabanini degistirmez.",
+    "Butonlar": [
+      "Yazdir — grid'i yazdirir (taban form)",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Her satir bir UretimIstasyon hareketidir; operasyon/recete bilgisi gosterilir.",
+    "Notlar": "Form basligi 'IstasyonKodu : <kod>' olur; baslangic tarihi gun.ay.yil saat formatlidir."
+  },
+  "FrmUretimIstasyonHareketList": {
+    "Baslik": "Istasyon Hareket Listesi",
+    "Amac": "Tum UretimIstasyon kayitlarini ust grid'de, secili istasyonun istasyon-hareketlerini alt grid'de gosteren master-detail liste. Ayrica baska ekranlara istasyon secimi icin secim modunda acilir.",
+    "Onkosul": "UretimIstasyon kayitlari olusmus olmali. Secim modunda calismasi icin cagiran formun SecimIcinAcildi set etmesi gerekir.",
+    "Sonra": "Liste modunda salt okunur. Secim modunda secilen istasyon dondurulur ve form kapanir.",
+    "Butonlar": [
+      "Ara — filtreleri uygulayip listeyi yeniler",
+      "Temizle — istasyon/recete/tarih filtrelerini sifirlar",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Master grid istasyonlari, detail grid o istasyonun hareketlerini gosterir; tarih bazli filtre vardir.",
+    "Notlar": "Acilista baslangic tarihi bugun-1 ay olarak gelir."
+  },
+  "FrmUretimIstasyonHareketDetayList": {
+    "Baslik": "Istasyon Hareket Detay Listesi",
+    "Amac": "Tum UretimIstasyonHareket (uretim/fire giris) kayitlarini tek grid'de istasyon, recete ve tarih araligina gore listeler. Bu hareketlere yeni kayit eklemenin giris noktasidir.",
+    "Onkosul": "En az bir uretim girisi (UretimIstasyonHareket) yapilmis olmali.",
+    "Sonra": "Ekle veya cift tik ile FrmUretimIstasyonUretimGir acilir; kaydet/sil sonrasi liste yenilenir ve miktar prosedurleri tetiklenir.",
+    "Butonlar": [
+      "Ara — filtreleri uygulayip listeyi yeniler",
+      "Temizle — filtre alanlarini sifirlar",
+      "Ekle — bos uretim girisi ekrani acar",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Hareketler istasyon/operasyon bilgisi tasir; Sira ile dogrudan filtre yoktur.",
+    "Notlar": "Acilista baslangic tarihi bugun-1 ay olarak gelir."
+  },
+  "FrmUretimIstasyonUretimGir": {
+    "Baslik": "Istasyon Uretim Kayit Gir",
+    "Amac": "Tek bir istasyon hareketine uretim miktari ve fire miktari girisini yapan ana kayit ekranidir. Ustte istasyon/operasyon/recete/planlanan bilgileri readonly, altta uretim/fire miktari, tarih ve personel girilir.",
+    "Onkosul": "Bir UretimIstasyon kaydi secilmis olmali; bos acilirsa istasyon secim ekrani gelir (secilmezse form kapanir). IdGuid dolu ise mevcut hareket duzenlenir.",
+    "Sonra": "Kaydet UretimIstasyonHareket'e Insert/Update yapar, ardindan Uretim_MiktarGuncelle ve Uretim_PlanlananGuncelle calisir; cagiran liste yenilenip form kapanir.",
+    "Butonlar": [
+      "Kaydet — dogrulama ve miktar tavan kontrolu sonrasi kaydeder, prosedurleri tetikler",
+      "Sil — onay sonrasi kaydi siler ve prosedurleri tetikler",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Bu girisin sonucu, Uretim_PlanlananGuncelle/SonrakiIstasyonaGonder ile sonraki operasyon Sira'sinin istasyonlarinin planlananina yansir.",
+    "Notlar": "Yeni kayitta uretim miktari planlanani (planlanan - mevcut uretim) asamaz; duzenlemede onceki deger hesaba katilir."
+  },
+  "FrmUretimIstasyonED": {
+    "Baslik": "Uretim Istasyon Kayit / Degistir",
+    "Amac": "Bir operasyon hareketine bagli istasyonlari tanimlama/degistirme ve sonraki operasyona gecirme ekranidir. Bekleyen miktari istasyonlara planlanan olarak dagitir, fason carisi secer, istasyon ekler/siler.",
+    "Onkosul": "Gecerli bir UretimOperasyonHareket (OprId) olmali; model ve hareket acilista yuklenir. Degistir modunda detay Id, SonrakiOperasyon modunda onceki operasyon bilgisi gerekir.",
+    "Sonra": "Kaydet mod'a gore KaydetNormal veya KaydetSonraki calistirir: detay + istasyonlar transaction'da yazilir, silinen istasyonlarin takip kayitlari temizlenir ve miktar prosedurleri calisir; cagiran ekran yenilenip form kapanir.",
+    "Butonlar": [
+      "Kaydet — istasyonlari toplar, dogrular ve mod'a gore kaydeder",
+      "Fason Sec — secili istasyona Mikro cari secer, fason yapar",
+      "Fason Temizle — satirin fason cari bilgisini temizler",
+      "Istasyon Ekle — operasyona yeni istasyon ekler",
+      "Istasyon Sil — uretim girilmemis istasyonu listeden cikarir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Cekirdek ekran. Operasyon-istasyon eslestirmesini uretir; SonrakiOperasyon modu Sira+1 operasyonun planlananini hesaplar (operasyon Sira mantiginin UI yansimasi).",
+    "Notlar": "Islem gormus istasyonda planlanan degistirilemez; planlanan uretim/fireden kucuk olamaz; fason istasyonda cari zorunludur."
+  },
+  "FrmUretimIstasyonCariSec": {
+    "Baslik": "Uretim Istasyon Cari Sec",
+    "Amac": "Bir istasyona tanimli recete istasyon carilerini listeleyip secim yaptiran basit secim ekranidir.",
+    "Onkosul": "Cariler listesi disaridan set edilmis olmali.",
+    "Sonra": "Cift tik / Enter ile secilen cari (kodu) dondurulur ve form kapanir.",
+    "Butonlar": [
+      "Cift tik / Enter — secili cariyi secip kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Sade secim formudur; teknik Id sutunlari gizlidir."
+  },
+  "FrmUretimIstasyonHareketSec": {
+    "Baslik": "Uretim Istasyon Hareket Sec",
+    "Amac": "UretimIstasyon kayitlarini bir operasyon hareketi detayina veya operasyon koduna gore listeleyip secim yaptiran secim ekranidir.",
+    "Onkosul": "UrOHDId (varsayilan) veya operasyon koduyla baglama bilgisi set edilmis olmali; secim modu icin SecimIcinAcildi.",
+    "Sonra": "Satir secilince secilen UretimIstasyon dondurulur ve form kapanir.",
+    "Butonlar": [
+      "Kaydet — secili satiri secip kapatir",
+      "Cift tik / Enter — secili satiri secip kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Operasyon koduna gore filtre secenegiyle operasyon-istasyon iliskisini gosterir.",
+    "Notlar": "Sade secim formu; satir numarasi gosterimi vardir."
+  },
+  "FrmUretimOperasyonList": {
+    "Baslik": "Operasyonlar Listesi",
+    "Amac": "Uretim operasyon adimlarini ust grid'de, secilen operasyonun hareketlerini orta grid'de, secilen hareketin istasyon detaylarini alt grid'de master-detail-detail gosterir. Durum hizli filtreleri icerir.",
+    "Onkosul": "Bir is emri icin uretim emri ve operasyonlari olusturulmus olmali. Siparisten gelindiyse siparis koduyla filtrelidir.",
+    "Sonra": "Cogunlukla salt okuma. Sag tik 'Durum Guncelle' Uretim_DurumGuncelle calistirir (kalan miktar ve durum alanlarini yeniden hesaplar). Alt grid detayina cift tik FrmUretimIstasyonED (Degistir) acar.",
+    "Butonlar": [
+      "Ara — filtrelerle sorgular (acilista otomatik calisir)",
+      "Temizle — durum/recete/tarih filtrelerini bosaltir",
+      "Hepsi / Beklemede / Uretimde / Hazir — durum hizli filtreleri",
+      "Durum Guncelle (sag tik) — secili operasyonun kalan miktar ve durumunu yeniden hesaplar",
+      "Kapat / Yazdir / Dizayn — taban form davranislari",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Operasyon Sira alani akisin omurgasidir; Uretim_PlanlananGuncelle uretim miktarini Sira N+1'in planlananina tasir. Bu formun tek yazma noktasi Durum Guncelle'dir.",
+    "Notlar": "Durum combosu gizli; filtre sadece hizli butonlarla yapilir."
+  },
+  "FrmUretimOperasyonHareketList": {
+    "Baslik": "Operasyon Hareketler Listesi",
+    "Amac": "UretimOperasyonHareket kayitlarini (planlanan/islemdeki/uretim/fire/iptal/kalan toplamlari) tek duz listede gosteren rapor ekranidir.",
+    "Onkosul": "En az bir uretim emri ve operasyonu olusturulmus, dolayisiyla hareket satirlari uretilmis olmali.",
+    "Sonra": "Salt okuma raporu; tablo/prosedur degistirmez. Cift tik sadece secim modunda satir secip kapatir.",
+    "Butonlar": [
+      "Ara — filtrelerle listeyi calistirir",
+      "Temizle — combo ve tarih alanlarini temizler",
+      "Kapat / Yazdir / Dizayn — taban form davranislari",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Her hareket satiri bir operasyonun Sira'sina baglidir; akis motoru bu satirlarin miktar alanlarini gunceller.",
+    "Notlar": "Filtre where'leri parametresiz string birlestirmesidir."
+  },
+  "FrmUretimOperasyonHareketDetayList": {
+    "Baslik": "Operasyon Hareket Detay Listesi",
+    "Amac": "UretimOperasyonHareketDetay kayitlarini ust grid'de, secilen detaya ait UretimIstasyon kayitlarini alt grid'de master-detail gosterir. Normal liste veya belirli bir hareketin odakli detayi modunda calisir.",
+    "Onkosul": "Operasyon hareketleri uzerinde uretim girisi yapilmis olmali. Odakli modda cagiran ekran DetayId set etmelidir.",
+    "Sonra": "Salt okuma. Detaya cift tik FrmUretimIstasyonED (Degistir) acar; istasyon hareketi orada degistirilir.",
+    "Butonlar": [
+      "Ara — listeyi calistirir (odakli modda filtreleri yok sayar)",
+      "Temizle — combo ve tarih alanlarini temizler",
+      "Kapat / Yazdir / Dizayn — taban form davranislari",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Operasyon detayi ile UretimIstasyon arasindaki koprudur; alt grid detayin istasyon kayitlarini cozer.",
+    "Notlar": "Yalnizca iki tarih filtresi vardir (diger formlardaki dort tarihten farkli)."
+  },
+  "FrmOperasyonKartlari": {
+    "Baslik": "Operasyon Kartlari",
+    "Amac": "Operasyon kartlarinin (kod, ad ve varsayilan istasyon) eklenmesi, duzenlenmesi, silinmesi ve listelenmesi. Recete operasyon editorunden cagrildiginda operasyon secim diyalogu olarak da calisir.",
+    "Onkosul": "Istasyon kartlari onceden tanimlanmis olmali (varsayilan istasyon lookup'lari icin). Ana menuden veya recete operasyon ekleme ekranindan acilir.",
+    "Sonra": "Kaydet OperasyonKarti'na yazar; operasyon kodu degistiyse ayni transaction'da bagli 6 tabloda (istasyon, recete, uretim, takip) kod toplu guncellenir. Sil secili karti siler. Secim modunda secilen operasyon dondurulur.",
+    "Butonlar": [
+      "Kaydet — operasyon kartini ekler/gunceller, kod degisikligini bagli tablolara yayar",
+      "Yeni — alanlari temizleyip yeni kayit hazirlar",
+      "Duzenle — secili satiri alanlara aktarir",
+      "Sil — onay sonrasi secili karti siler",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Operasyon kartlari, operasyon Sira bazli akis motorunun temel sozlugudur; recete operasyon sirasi ve operasyon-istasyon eslestirmeleri bu kartlardaki kod uzerine kurulur.",
+    "Notlar": "Operasyon icin tanimlanan varsayilan istasyon, recete operasyon ekleme sirasinda otomatik istasyon onerisinde kullanilir."
+  },
+  "FrmIstasyonKartList": {
+    "Baslik": "Istasyon Kart Listesi",
+    "Amac": "Istasyon kartlarini operasyona gore filtreleyip listeleyen, esas olarak secim diyalogu olarak kullanilan liste ekrani. Recete-istasyon eslestirme ve uretim istasyon duzenleme ekranlarindan istasyon secmek icin acilir.",
+    "Onkosul": "Istasyon kartlari ve operasyon kartlari tanimli olmali. Secim modunda acan ekran SecimIcinAcildi (ve opsiyonel operasyon/recete filtresi) set eder.",
+    "Sonra": "Veritabaninda degisiklik yapmaz; secilen istasyon dondurulur ve form kapanir.",
+    "Butonlar": [
+      "Ara — operasyon filtresine gore listeyi ceker",
+      "Temizle — operasyon arama kutusunu bosaltir",
+      "Tumu — tum istasyonlar / sadece receteye bagli istasyonlar arasinda gecis",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Dolayli; secilen istasyon recete eslestirme veya uretim istasyon duzenlemede kullanilir, bu da akis kurulumunu etkiler.",
+    "Notlar": "Salt okuma/secim ekranidir; istasyon kart CRUD'u FrmIstasyonKartlari'nda yapilir."
+  },
+  "FrmIstasyonKartlari": {
+    "Baslik": "Istasyon Kartlari (Kayit)",
+    "Amac": "Istasyon kartlarinin tam CRUD ekrani. Her istasyon bir operasyona ve opsiyonel fason cariye baglanir; kalite kontrol, yazdirilmali, fason bayraklari tutulur.",
+    "Onkosul": "Operasyon kartlari tanimli olmali (operasyon combolari icin). Fason cari secimi icin Mikro cari kartlari bulunmali.",
+    "Sonra": "Kaydet IstasyonKarti'na yazar; istasyon kodu degistiyse ayni transaction'da recete/uretim/takip/kontrol tablolarindaki kod ve ad guncellenir. Sil secili karti siler; liste yenilenir.",
+    "Butonlar": [
+      "Kaydet — karti ekler/gunceller, kod degisikligini bagli tablolara yayar",
+      "Sil — onay sonrasi secili karti siler",
+      "Yeni — formu temizleyip yeni kayit hazirlar",
+      "Duzenle — secili satiri forma yukler",
+      "Bagla — listeyi yeniden yukler",
+      "Fason Sec — Mikro cari listesinden fason cari secer",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Dogrudan ve kritik. Istasyon-operasyon eslesmesini bu kart belirler; akis operasyon Sira'sina gore ilerlerken her operasyona istasyon kaydi olusturulur. Kod degisimi tum zincire yayilir.",
+    "Notlar": "Fason / KaliteKontrol / Yazdirilmali bayraklari istasyon ozelliklerini belirler."
+  },
+  "FrmIstasyonAciklamalari": {
+    "Baslik": "Istasyon Aciklamalari",
+    "Amac": "Saha tabletinde operatorun secebilecegi kodlu aciklama listelerini yonetir. Tek form, modul turune gore Baslatma Hatasi, Durdurma Kodu veya Fire Sebebi icin acilir.",
+    "Onkosul": "Form AciklamaModulTuru set edilerek (ana menuden ilgili buton) acilmali. Personel gorevi combosu icin Personel tablosunda gorev degerleri bulunmali.",
+    "Sonra": "Kaydet aciklama kaydini ilgili modul turuyle yazar. Sil kaydi siler. Bu kayitlar tablette durdurma/hata/fire ekranlarinda secim listesi olarak okunur.",
+    "Butonlar": [
+      "Kaydet — kod zorunlu dogrulamasi sonrasi aciklamayi yazar",
+      "Sil — onay sonrasi kaydi siler",
+      "Yeni — alanlari temizler",
+      "Duzenle — secili satiri forma yukler",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "SMS sablonunda @IstasyonKodu ve @Personel degerleri yer tutucu olarak kullanilir; SMS gonderim bayragi ve personel gorevi bagli tutulur."
+  },
+  "FrmIstasyonBakimList": {
+    "Baslik": "Istasyon Bakim Listesi",
+    "Amac": "Istasyonlara ait bakim/ariza kayitlarini istasyon ve tarih araligina gore listeler; ust grid bakim basliklarini, alt grid secili bakimin degisen parcalarini gosterir.",
+    "Onkosul": "Istasyon kartlari tanimli olmali (istasyon filtresi icin). Ana ekrandan acilir.",
+    "Sonra": "Bu ekran kayit yapmaz; Ekle veya cift tik FrmIstasyonBakimEkle popup'ini acar. Popup kaydedince liste tazelenir.",
+    "Butonlar": [
+      "Ara — istasyon + tarih araligina gore bakim listesini ceker",
+      "Ekle — bos bakim ekleme ekrani acar",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Ust grid satiri degisince alt parca grid'i yenilenir."
+  },
+  "FrmIstasyonBakimEkle": {
+    "Baslik": "Istasyon Bakim Ekle",
+    "Amac": "Tek bir bakim/ariza kaydini (istasyon, tarih, personel, islem turu, aciklama) ve ona ait degisen parca listesini olusturma/duzenleme popup'i.",
+    "Onkosul": "Istasyon kartlari tanimli olmali. Yeni icin bos, duzenleme icin IdGuid set edilerek acilir.",
+    "Sonra": "Kaydet basligi ve parcalari tek transaction'da yazar (eski parcalari silip yeniden ekler). Sil basligi ve tum parcalari siler; liste ekrani tazelenir.",
+    "Butonlar": [
+      "Kaydet — istasyon zorunlu dogrulamasi sonrasi baslik+parca kaydeder",
+      "Sil — onay sonrasi baslik ve parcalari siler",
+      "Parca Ekle — yeni parca ekleme popup'i acar",
+      "Parca Sil — secili parcayi listeden cikarir",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Audit alanlari aktif kullanici ile doldurulur; parca grid'inde parca/no/evrak/aciklama/garanti satir ici duzenlenebilir."
+  },
+  "FrmIstasyonBakimParcaEkle": {
+    "Baslik": "Istasyon Bakim Parca Ekle",
+    "Amac": "Bir bakim kaydina eklenecek tek bir degisen parcanin bilgilerini (parca adi, parca no, evrak no, aciklama, garanti) girmek icin kullanilan sade popup.",
+    "Onkosul": "FrmIstasyonBakimEkle icinden yeni parca nesnesi set edilerek acilir.",
+    "Sonra": "Kaydet parca nesnesini doldurur ve kapanir; DB'ye dogrudan yazmaz, donen parca cagiran ekranin listesine eklenir ve asil kayit orada transaction'da yapilir.",
+    "Butonlar": [
+      "Kaydet — parca adi dolu ise nesneyi doldurup kapatir",
+      "Kapat — kaydetmeden kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Tek zorunlu alan parca adidir; persist islemi cagiran bakim ekranindadir."
+  },
+  "FrmIstasyonHareketler": {
+    "Baslik": "Istasyon Hareketler",
+    "Amac": "Acilmis istasyon takip basliklarini listeler. Ust grid baslik, alt sol grid hareket detaylari, alt sag grid ilgili sarf stok hareketlerini gosterir. Istasyon, durum, is emri ve tarihe gore filtrelenir.",
+    "Onkosul": "Tablette ilgili istasyonda en az bir takip kaydi baslatilmis olmali. Baska ekrandan tek is emrine kilitli acilabilir.",
+    "Sonra": "Yalniz okuma/goruntulemedir; veri degistirmez. Detay duzeltmesi FrmIstasyonHareketDetaylar uzerinden yapilir.",
+    "Butonlar": [
+      "Ara — filtreye gore ust gridi doldurur (acilista otomatik)",
+      "Temizle — tarih/istasyon/is emri filtrelerini sifirlar",
+      "Hepsi / Aktif / Durduruldu / Bitti — durum filtreleri (acilis: Aktif)",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Aktif satirlar o anda calisilan, Bitti satirlar sevk edilmis/tamamlanmis operasyonlardir; akisi degistirmez (okuma).",
+    "Notlar": "Parti/Lot kolonlari ayar geregi gizlenebilir; SiparisKodu kolonu IsEmriKodu olarak gosterilir."
+  },
+  "FrmIstasyonBekleyenler": {
+    "Baslik": "Istasyon Bekleyenler",
+    "Amac": "Henuz hicbir istasyon takip kaydi olusturulmamis, yani sahada baslatilmayi bekleyen UretimIstasyon kuyrugunu gosterir (kalan/planlanan/uretilen/fire miktarlariyla).",
+    "Onkosul": "UretimOperasyon/UretimIstasyon kayitlari uretilmis (KalanMiktar>0) ama o istasyon icin henuz takip acilmamis olmali.",
+    "Sonra": "Salt okuma listesidir; kayit/degisiklik tetiklemez. Operatorun hangi isleri baslatmasi gerektigini planlama amaclidir.",
+    "Butonlar": [
+      "Ara — bekleyen kuyrugu yeniden ceker (acilista otomatik)",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Bekleyen = takip kaydi henuz yok; tablette baslatildiginda satir listeden dusup Istasyon Hareketler'e tasinir.",
+    "Notlar": "Tarih filtreleri pasif (yorumlu); istasyon ve is emri filtresi aktiftir."
+  },
+  "FrmIstasyonHareketDetaylar": {
+    "Baslik": "Istasyon Hareket Detaylar",
+    "Amac": "Tum istasyon hareket detaylarini (mamul giris, fire mamul, uretim bitis, fire stok giris, uretim iptal) tek listede gosterir. Sarf/fire fis turleri haric tutulur. Detaya cift tik miktar duzeltme ekranini acar.",
+    "Onkosul": "Tablette uretim girisi yapilmis ve detay kayitlari olusmus olmali.",
+    "Sonra": "Cift tik FrmIstasyonHareketDetayED acar; orada kaydedilince miktarlar guncellenir ve liste tazelenir.",
+    "Butonlar": [
+      "Ara — filtreye gore detaylari listeler",
+      "Temizle — tarih/saat/istasyon/is emri/tur filtrelerini sifirlar",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Detay turleri miktar motorunun yukari toplama girdileridir; buradaki duzeltme sonraki operasyon Sira'sinin planlananini etkiler (ED formunda prosedur tetiklenir).",
+    "Notlar": "Sarf cikis ve fire giris fisleri kasitli olarak haric (onlar Fis Listesinde)."
+  },
+  "FrmIstasyonHareketDetayED": {
+    "Baslik": "Istasyon Hareket Detay Guncelle",
+    "Amac": "Tek bir istasyon hareket detayinin miktar / fire / iptal degerlerini duzeltir (ofiste hatali girilen miktari elle duzeltme). Stok/recete/operasyon alanlari salt okunurdur.",
+    "Onkosul": "FrmIstasyonHareketDetaylar listesinde bir detay secilip cift tiklanmis olmali (Model set edilmis).",
+    "Sonra": "Kaydet tek transaction'da detayi, UretimIstasyonHareket'i ve baslik miktarlarini gunceller, iptali stok hareketlerine oranlar, ardindan Uretim_MiktarGuncelle ve Uretim_PlanlananGuncelle calistirip formu kapatir.",
+    "Butonlar": [
+      "Kaydet — miktar guncelleme zincirini calistirir ve kapanir",
+      "Kapat — kaydetmeden kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Bu modulun akis motorunu tetikleyen tek yazma noktasidir; miktar degisince SonrakiIstasyonaGonder zinciriyle sonraki operasyonun planlanani yeniden hesaplanir.",
+    "Notlar": "Yalnizca miktar/fire/iptal alanlari duzenlenebilir; silme yoktur."
+  },
+  "FrmIstasyonFisList": {
+    "Baslik": "Istasyon Fis Listesi",
+    "Amac": "Yalniz sarf cikis ve fire giris turundeki istasyon hareket detaylarini listeler ve secilenleri Mikro ERP'ye aktarir. Aktarim durumuna gore (Tumu/Aktarilan/Bekleyen) filtrelenir.",
+    "Onkosul": "Sarf veya fire fisi turunde detay kayitlari olusmus olmali. Mikro entegre ayarlari tanimli olmali.",
+    "Sonra": "Secili fisler FrmMikroyaSarfFireKaydet'e tasinir; orada Mikro stok hareketleri yazilir ve basarida detaylar aktarilan olarak isaretlenir.",
+    "Butonlar": [
+      "Ara — filtreye gore fis listesini doldurur (acilis: Bekleyen)",
+      "Temizle — tarih filtrelerini bosaltir",
+      "Tumu / Aktarilan / Bekleyen — aktarim durumu filtreleri",
+      "Mikroya Gonder (sag tik) — secili fisleri Mikro aktarim ekranina gonderir",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Istasyon bazli sarf/fire kayitlarini is emri tam kapanmadan Mikro'ya aktarir.",
+    "Notlar": "Cift aktarimi engellemek icin aktarim oncesi mukerrer kayit kontrolu yapilir."
+  },
+  "FrmIstasyonHareketLogList": {
+    "Baslik": "Istasyon Hareket Log Listesi",
+    "Amac": "Saha akisindaki baslat/durdur/bitir/sevk gibi olaylarin log kayitlarini listeler. Operasyon, istasyon ve tarih-saat araligina gore filtrelenir; denetim/izleme amaclidir.",
+    "Onkosul": "Tablette istasyon takip akisi calismis ve log kayitlari olusmus olmali.",
+    "Sonra": "Salt okuma; veri degistirmez.",
+    "Butonlar": [
+      "Ara — filtreye gore log listesini doldurur (acilista otomatik)",
+      "Temizle — tarih/saat filtrelerini sifirlar",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Log kayitlari saha adimlarinin zaman damgali izini tutar; Sira/akis motorunu degistirmez.",
+    "Notlar": "Operasyon ve istasyon filtreleri ilgili kart listelerinden beslenir."
+  },
+  "FrmReceteListesi": {
+    "Baslik": "Recete Listesi",
+    "Amac": "Tum recetelerin arandigi/listelendigi ana ekran. Ust grid recete basliklari, alt iki grid secili recetenin detaylarini ve operasyonlarini gosterir. Secim modunda recete secmek icin de acilir.",
+    "Onkosul": "Mikro stok cinsi tanimlari okunabilmeli. Liste acilista otomatik arar.",
+    "Sonra": "Veriyi sadece okur; degisiklik alt ekranlardan yapilir. Cift tik FrmReceteED acar veya secim modunda receteyi dondurur.",
+    "Butonlar": [
+      "Ara — filtre alanlarina gore listeyi ceker",
+      "Temizle — kod/ad/grup filtrelerini bosaltir",
+      "Recete Ekle — bos recete kayit ekrani acar",
+      "Operasyon Ekle / Duzenle — secili recetenin operasyon editorunu acar",
+      "Operasyon Kopyala — kaynak receteden operasyonlari kolonlar",
+      "Stok Maliyet — secili recetenin stok maliyet ekranini acar",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Operasyon gridinde ReceteOperasyon.Sira goruntulenir; bu sira uretim akisinin belirleyicisidir (burada salt okuma).",
+    "Notlar": "Filtreler LIKE bazli string birlestirmeyle kurulur."
+  },
+  "FrmReceteED": {
+    "Baslik": "Recete Ekle / Duzenle",
+    "Amac": "Bir recetenin ana bilgileri, detaylari, her detayin alternatif stoklari (renk/beden) ve bagli istasyonlarini tanimlamak/duzenlemek icin ana kart ekrani. Mikrodan recete ice aktarma da burada yapilir.",
+    "Onkosul": "Listeden recete secilmis (duzenleme) ya da yeni kayit. Mikrodan aktarmada gecerli Mikro recete kodu set edilmis olmali.",
+    "Sonra": "Kaydet transaction'da recete basligini ve detay/stok/istasyon/renk-beden tablolarini sil-yeniden yazar. Ayni entegre stok kodu baska recetede varsa engellenir.",
+    "Butonlar": [
+      "Kaydet — receteyi ve alt kayitlari yazar (entegre stok tekillik kontrolu ile)",
+      "Sil — bagli hareket yoksa receteyi siler",
+      "Kopyala — receteyi yeni Id'lerle kopyalar",
+      "Detay Ekle / Detay Sil — recete detay (urun agaci) satiri ekler/cikarir",
+      "Stok Ekle / Stok Sil — detaya Mikro stok ekler/cikarir (renk/beden ile)",
+      "Aciklamalar — recete aciklamalari ekranini acar",
+      "Operasyon Ekle / Duzenle — operasyon editorunu acar",
+      "Istasyon Ekle / Istasyon Sil — bagli istasyon ekler/cikarir",
+      "Istasyon Gruplar / Istasyon-Grup Ayarlar — grup-istasyon eslestirme ekranlarini acar",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Istasyon Gruplama Kullan bayragi burada set edilir; =1 ise uretim akisinda sonraki istasyona otomatik gonderme calisir. Operasyon sirasi bu receteye baglidir.",
+    "Notlar": "Detay gridinde sira/miktar/ebat/gram/olcu/fire satir ici duzenlenebilir; bayraklar (gruplama, aparat, olcum) recete davranisini belirler."
+  },
+  "FrmReceteDetayED": {
+    "Baslik": "Recete Detay Ekle / Duzenle",
+    "Amac": "Recetenin tek bir detay (urun agaci satiri) bilgilerini girer: cinsi, birim, miktar, fire %, recete sira, varsayilan stok, renk/beden, operasyon maliyeti, stok turu ve bayraklar.",
+    "Onkosul": "FrmReceteED'den cagrilir; yeni icin bos detay ve sira, duzenleme icin mevcut detay gecirilir.",
+    "Sonra": "Tamam detay nesnesini gunceller ve kapanir; cagiran ekran detayi listesine ekler/gunceller (DB'ye yazma ana ekranin Kaydet'inde olur).",
+    "Butonlar": [
+      "Tamam — zorunlu alan kontrolleri sonrasi detayi modele aktarir ve kapanir",
+      "Kapat — diyalogu iptal eder",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "ReceteSira (detay/urun agaci sirasi) burada girilir; operasyon sirasindan farklidir.",
+    "Notlar": "Stok turu Grup ise ana grup, Sabit ise varsayilan stok kodu zorunludur."
+  },
+  "FrmReceteStokSec": {
+    "Baslik": "Recete Stok Sec (renk/beden)",
+    "Amac": "Bir recete stok satiri icin stok kodu/ad, renk, beden, ebat, gram, olcu ve coklu renk/beden secim listesini belirler.",
+    "Onkosul": "FrmReceteED'den yeni stok veya mevcut stok satirina cift tik ile (renk/beden listesi gecirilerek) acilir.",
+    "Sonra": "Kaydet recete stok bilgilerini ve secili renk/beden listesini doldurur, kapanir; cagiran ekran model listelerine yansitir (DB yazimi ana ekranda).",
+    "Butonlar": [
+      "Kaydet — alanlari ve secili bedenleri modele aktarir, kapanir",
+      "Kapat — iptal eder",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Bedenler Mikro stoktan, secili olanlar mevcut kayitlardan birlesir; edit modunda stok kodu kolonu gizlidir."
+  },
+  "FrmReceteOperasyonED": {
+    "Baslik": "Recete Operasyon Ekle / Duzenle",
+    "Amac": "Bir recetenin operasyonlarini (sira, sure, maliyet, aparat, olcum min/max), her operasyona bagli istasyonlari ve her istasyona bagli carileri tanimlar. Uretim akisinin operasyon sirasini belirleyen kritik ekran.",
+    "Onkosul": "Recete IdGuid'i ile acilir. Kopyalama icin hedef recete set edilir.",
+    "Sonra": "Kaydet sira kontrolu sonrasi operasyon/istasyon/cari tablolarini transaction'da sil-yeniden yazar; duzenlemede ad guncelleme proclari calisir.",
+    "Butonlar": [
+      "Kaydet — sira dogrulamasi sonrasi operasyon-istasyon-cari yapisini kaydeder",
+      "Sil — bagli hareket yoksa operasyonlari siler",
+      "Operasyon Ekle / Operasyon Sil — operasyon adimi ekler/cikarir (siralari yeniden numaralandirir)",
+      "Istasyon Ekle / Istasyon Sil — secili operasyona istasyon ekler/cikarir",
+      "Cari Ekle / Cari Sil — secili istasyona fason cari ekler/cikarir",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Dogrudan. Operasyon Sira burada girilir/kontrol edilir (1'den baslayan, tekil, ardisik); bu deger uretim girisindeki Sira N -> N+1 tasima mantiginin temelidir.",
+    "Notlar": "Operasyon ekleme, operasyon kartinin varsayilan istasyonunu ve bagli istasyonlari otomatik getirir."
+  },
+  "FrmReceteAciklamalar": {
+    "Baslik": "Recete Aciklamalari",
+    "Amac": "Bir receteye serbest aciklama satirlari atar; ReceteAciklama modulune tanimli aciklama kod sablonlarini baz alir.",
+    "Onkosul": "Kayitli bir recete gerekir; FrmReceteED'deki Aciklamalar butonundan acilir.",
+    "Sonra": "Kaydet receteye ait aciklama kayitlarini silip yeniden yazar. Sil receteye bagli aciklamalari siler.",
+    "Butonlar": [
+      "Kaydet — aciklama degerlerini sil-yeniden yazar",
+      "Sil — receteye bagli aciklamalari siler",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Deger yoksa aciklama kod sablonlarindan satirlar uretilip receteye baglanir."
+  },
+  "FrmReceteMaliyetGenel": {
+    "Baslik": "Recete Maliyet (Genel)",
+    "Amac": "Recetenin stok maliyeti (varsayilan stoklarin Mikro standart maliyeti x miktar) ve operasyon maliyeti toplamini hesaplar ve genel maliyeti gosterir; yazdirilabilir.",
+    "Onkosul": "FrmReceteED -> Stok Maliyet ile acilir; recete modeli set edilmis olmali.",
+    "Sonra": "Bagla maliyetleri hesaplar ve gosterir (DB'ye yazma yok). Yazdir rapor basar.",
+    "Butonlar": [
+      "Bagla — maliyetleri yeniden hesaplar",
+      "Yazdir — ReceteMaliyet raporunu basar",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Sadece varsayilan stok kodu dolu detaylar maliyete dahil edilir."
+  },
+  "FrmReceteMaliyetStoklar": {
+    "Baslik": "Recete Maliyet (Stoklar)",
+    "Amac": "Recetedeki stoklarin farkli maliyet bazlarini (son alis, son 5 alis ortalama, standart, son sayim, devir) miktar x fiyat olarak ayri ayri hesaplar ve toplamlarini gosterir; yazdirilabilir.",
+    "Onkosul": "FrmReceteListesi -> Stok Maliyet veya FrmReceteED ile acilir; recete Id set edilmis olmali.",
+    "Sonra": "Bagla recete detaylarini ve Mikro fiyatlari birlestirip maliyetleri hesaplar (DB'ye yazma yok). Yazdir rapor basar.",
+    "Butonlar": [
+      "Bagla — receteyi cekip maliyetleri hesaplar",
+      "Yazdir — ReceteStoklarMaliyet raporunu basar",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Maliyet bazlari Mikro son giris fiyati fonksiyonu parametreleriyle gelir."
+  },
+  "FrmReceteSec": {
+    "Baslik": "Recete Sec",
+    "Amac": "Sade recete secim/arama diyalogu. Baska ekranlarda recete secmek icin kullanilir; secim modunda receteyi dondurur, normal acilista FrmReceteED ile duzenleme yapar.",
+    "Onkosul": "Secim modunda SecimIcinAcildi ile acilir; acilista filtresiz arar.",
+    "Sonra": "Cift tik / Enter secim modunda receteyi dondurur; degilse FrmReceteED acar.",
+    "Butonlar": [
+      "Ara — kod/ad/grup filtreleriyle listeler",
+      "Temizle — filtreleri bosaltir",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Recete Listesi'nin sadelestirilmis muadili; detay/operasyon gridleri yoktur."
+  },
+  "FrmReceteGrupListesi": {
+    "Baslik": "Recete Grup Listesi",
+    "Amac": "Recete gruplarini (birden cok receteyi takim halinde toplayan ust kayit) listeler; secili grubun receteleri alt grid'de gosterilir. Secim modunda grup dondurur.",
+    "Onkosul": "Acilista grup filtreleri ve combo yuklenir, liste cekilir.",
+    "Sonra": "Cift tik / Enter secim modunda grubu dondurur; degilse FrmReceteGrupED acar.",
+    "Butonlar": [
+      "Ara — kod/aciklama/grup filtreleriyle listeler",
+      "Temizle — filtreleri bosaltir",
+      "Grup/Takim Ekle — bos grup kayit ekrani acar",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Grup, recetelerin uzerinde bir takim katmanidir; uretim akisini dogrudan etkilemez."
+  },
+  "FrmReceteGrupED": {
+    "Baslik": "Recete Grup Ekle / Duzenle",
+    "Amac": "Bir recete grubunun kodu, grubu, aciklamasi ile gruba dahil receteleri (recete + miktar + aciklama) tanimlar.",
+    "Onkosul": "FrmReceteGrupListesi -> Grup/Takim Ekle (yeni) veya cift tik (duzenleme) ile acilir.",
+    "Sonra": "Kaydet grubu ve detaylarini transaction'da sil-yeniden yazar; liste yenilenir. Sil grubu ve detaylarini siler.",
+    "Butonlar": [
+      "Kaydet — grup basligini ve recete detaylarini yazar",
+      "Sil — onay sonrasi grubu siler",
+      "Detay Ekle — gruba recete ekler",
+      "Detay Sil — secili recete detayini cikarir",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Her detay satiri bir receteyi ve takimdaki miktarini tutar."
+  },
+  "FrmReceteIstasyonGrupKodlari": {
+    "Baslik": "Istasyon Grup Kodlari",
+    "Amac": "Istasyon grup kodlarinin ana sozluk/tanim ekranidir (kod, ad, aciklama). Diger eslestirme ekranlari ve receteler bu kodlari referans alir. Secim ekrani olarak da calisir.",
+    "Onkosul": "Yok; bagimsiz tanim ekranidir. Ana menuden veya eslestirme ekranlarindaki grup kodu butonundan acilir.",
+    "Sonra": "Kaydet grup kodunu yazar; liste yenilenir. Sil kaydi siler. Secim modunda secilen kod dondurulur.",
+    "Butonlar": [
+      "Kaydet — kod zorunlu ve benzersizlik kontrolu sonrasi yazar",
+      "Sil — onay sonrasi kaydi siler",
+      "Duzenle — secili satiri alanlara aktarir",
+      "Yeni — alanlari temizler",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Dolayli; tanimlanan grup kodu operasyon-istasyon eslestirmesinin ust anahtaridir, sirayi belirlemez ama hangi istasyon setinin kullanilacagini belirler.",
+    "Notlar": "Bu kodlar uretim asamasinda sonraki istasyona otomatik gonderme prosedurunce tuketilir."
+  },
+  "FrmReceteIstasyonGrupOperasyonEslestir": {
+    "Baslik": "Recete Istasyon-Operasyon Eslestir",
+    "Amac": "Bir grup kodu altinda her operasyon kodunun hangi istasyona karsilik geldigini esleyen tablodur. Gruplama motorunun operasyon basina tek istasyon kaydi olusturmak icin okudugu ana referanstir.",
+    "Onkosul": "En az bir grup kodu, eslenecek operasyon kodlari ve istasyon kodlari tanimli olmali.",
+    "Sonra": "Once grup kodu secilir, liste filtrelenir. Yeni/Duzenle ile operasyon ve istasyon secilip Kaydet eslesmeyi yazar; alanlar kilitlenir. Sil satiri siler.",
+    "Butonlar": [
+      "Kaydet — grup/operasyon/istasyon zorunlu kontrolu sonrasi eslesmeyi yazar",
+      "Sil — onay sonrasi eslesmeyi siler",
+      "Duzenle — secili satiri alanlara aktarir",
+      "Yeni — yeni eslesme hazirlar",
+      "Grup Kodu Sec — grup kodu secim ekranini acar",
+      "Operasyon Sec — operasyon kartlarindan operasyon secer",
+      "Istasyon Sec — istasyon kart listesinden istasyon secer",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Dogrudan iliskili ama sirayi kendisi tutmaz; sirayi operasyondan alir, burada her operasyona istasyon eslenir.",
+    "Notlar": "Once bir grup kodu secilmeden operasyon/istasyon secimi yapilamaz."
+  },
+  "FrmReceteIstasyonGrupIstasyonEslestir": {
+    "Baslik": "Receteye Istasyon Grup Sec",
+    "Amac": "Belirli bir receteye bir veya daha fazla istasyon grup kodu baglar. Boylece o recete uretildiginde hangi operasyon-istasyon eslestirmesinin gecerli olacagi belirlenir.",
+    "Onkosul": "Recete kayitli olmali (FrmReceteED'de Istasyon Gruplar butonu kayitsiz receteyi engeller). Grup kodunun operasyonlari tanimli olmali.",
+    "Sonra": "Grup kodu secildiginde recete operasyonlari ile grup operasyonlarinin tam eslesip eslesmedigi dogrulanir; eslesmiyorsa engellenir. Kaydet eslemeyi yazar.",
+    "Butonlar": [
+      "Kaydet — grup ve recete kodu zorunlu kontrolu sonrasi eslemeyi yazar",
+      "Sil — onay sonrasi eslemeyi siler",
+      "Duzenle — secili satiri aktarir",
+      "Yeni — yeni esleme hazirlar",
+      "Grup Kodu Sec — grup secer ve recete ile uyumunu dogrular",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Dolayli; receteyi grup koduna bagladigi icin uretimde operasyon-istasyon eslestirmesini ve otomatik istasyon olusturmayi etkiler; sirayi tutmaz.",
+    "Notlar": "Recete-grup operasyon eslesme dogrulamasi hatali grup secimini engelleyen onemli is kuralidir; bir receteye birden fazla grup kodu eklenebilir."
+  },
+  "FrmMalKabulListe": {
+    "Baslik": "Mal Kabul Liste",
+    "Amac": "Uretim stok fislerini tarih araligi ve istasyon kodu/adi filtresiyle listeler. Bir satira cift tiklayinca fisin detayini acar.",
+    "Onkosul": "Uretim akisi tarafindan olusturulmus uretim stok fis kayitlari bulunmali. Acilista tarih filtresi yilbasina set edilip otomatik aranir.",
+    "Sonra": "Kayit/silme yapmaz; sadece okuma. Cift tik FrmMalKabulED acar veya secim modunda fisi dondurur.",
+    "Butonlar": [
+      "Ara — filtreye gore fis listesini ceker (acilista otomatik)",
+      "Temizle — arama/tarih filtrelerini sifirlar",
+      "Yazdir — secili listeyi MalKabul sablonuyla yazdirir",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Fis basligindaki istasyon, uretim emrinin 1. operasyonunun istasyonu uzerinden eslestirilir; arama da bu istasyona gore filtreler.",
+    "Notlar": "SiparisKodu basligi IsEmriKodu olarak gosterilir."
+  },
+  "FrmMalKabulED": {
+    "Baslik": "Mal Kabul Fisi",
+    "Amac": "Tek bir uretim stok fisini ve satirlarini salt-okunur goruntuler; fisi (ve Mikro'ya aktarilan karsiligini) silmeyi saglar.",
+    "Onkosul": "Goruntulenecek fis var olmali. IdGuid (liste cift tik) ya da SipId (siparis listesinden Mal Kabul Fisi Ac) set edilmis olmali.",
+    "Sonra": "Kaydetme yapmaz. Sil yerel fisi (UretimStokFis/Hareket/DepoStokHareket) ve Mikro'daki ayni belge no'lu fisi siler, form kapanir.",
+    "Butonlar": [
+      "Sil — onay sonrasi yerel ve Mikro fisini siler",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Fis basligindaki istasyon, uretim emrinin 1. operasyonunun istasyonundan gelir.",
+    "Notlar": "Bu formdan kaydetme devre disidir; yalnizca goruntuleme ve silme yapilir."
+  },
+  "FrmOlcuKontrolListesi": {
+    "Baslik": "Olcu Kontrol Listesi",
+    "Amac": "Uretim sirasinda girilen olcum kontrol kayitlarini grid uzerinde listeler (istasyon, stok, olcum degeri, tolerans araliklari, hatali giris, is emri, personel, tarih). Salt-okunur izleme/rapor ekranidir.",
+    "Onkosul": "Olcum kayitlari onceden olusmus olmali; bu kayitlar tablet saha akisinda (olcum girisi) yapilir. Ilgili is emri ve personel DB'de bulunmali.",
+    "Sonra": "Salt-okunur; tablo yazmaz, prosedur cagirmaz. Tek islem secili kayitla yazdirma. Secim modunda cift tik kaydi dondurur.",
+    "Butonlar": [
+      "Ara — filtreleri uygulayip gridi doldurur (acilista otomatik)",
+      "Temizle — arama kutusu ve tarih filtrelerini sifirlar",
+      "Yazdir — listeyi UretimKontrol raporu olarak basar",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Akis motoruna katki vermez; her olcum bir istasyon hareketine baglidir. Tolerans disi olcumler burada gorulse de istasyon sevkini degistirmez.",
+    "Notlar": "Acilista baslangic tarihi yilbasina set edilir; bitis tarihi bos gelir."
+  },
+  "FrmUretimTalepList": {
+    "Baslik": "Uretim Talep Liste",
+    "Amac": "Girilmis uretim talep evraklarini tarih araligina gore listeler; secili evrakin kalem satirlarini alt grid'de gosterir. Yeni talep ekleme veya duzenleme giris noktasidir.",
+    "Onkosul": "Veritabani baglantisi hazir olmali; listede evrak gorunmesi icin en az bir talep kaydedilmis olmali.",
+    "Sonra": "Salt okuma/listeleme; Ur.Talep Ekle veya cift tik FrmUretimTalepED acar. Kaydet/sil sonrasi liste yenilenir.",
+    "Butonlar": [
+      "Ara — tarih filtreleriyle talep listesini ceker",
+      "Temizle — tarih filtrelerini bosaltir",
+      "Ur.Talep Ekle — yeni talep kayit ekrani acar",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Dolayli; hareket satirlarinda hedef istasyon gorunur ama bu ekran akis motorunu tetiklemez.",
+    "Notlar": "Acilista baslangic tarihi bugun-7 gun olarak gelir; aktif filtre yalnizca tarih araligidir."
+  },
+  "FrmUretimTalepED": {
+    "Baslik": "Uretim Talep Kayit",
+    "Amac": "Tek bir uretim talep evrakini olusturmak/duzenlemek icin kullanilir. Ust kisimda evrak basligi, altta kalem grid'i (hedef istasyon, stok/recete, miktar, birim, parti, lot) bulunur.",
+    "Onkosul": "FrmUretimTalepList uzerinden yeni veya duzenleme ile acilmali. Istasyon kartlari ve receteler tanimli olmali; kayit icin lisans aktif olmali.",
+    "Sonra": "Kaydet dogrulama sonrasi UretimTalep basligini ve hareketlerini tek transaction'da yazar (sil-yaz deseni); liste yenilenir. Bu modul akis prosedurlerini cagirmaz.",
+    "Butonlar": [
+      "Kaydet — dogrula, aktar ve evraki kaydet",
+      "Sil — onay sonrasi evraki ve hareketleri siler",
+      "Stok Sec (F5) — Recete Listesinden kalem secip ekler",
+      "Stok Sil (F8) — secili kalem satirini cikarir",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Her kalemde hedef istasyon lookup ile secilir; ancak modul operasyon-sira akis motorunu calistirmaz, sadece istasyon bazli talep tutar.",
+    "Notlar": "Evrak no bossa otomatik uretilir; her kalemde istasyon zorunlu ve miktar 0'dan buyuk olmali."
+  },
+  "FrmMikroCariListesi": {
+    "Baslik": "Mikro Cari Listesi",
+    "Amac": "Mikro ERP'deki cari (musteri/tedarikci) kartlarini arar ve listeler. Cogunlukla baska ekranlardan cari sec diyalogu olarak acilir.",
+    "Onkosul": "Mikro DB baglantisi hazir olmali. Secim modunda acan formun SecimIcinAcildi set etmesi gerekir.",
+    "Sonra": "Salt-okunur; Mikro'da degisiklik yapmaz. Secim modunda secilen cari (kod) dondurulur ve form kapanir.",
+    "Butonlar": [
+      "Ara — arama kriterleriyle listeyi yukler",
+      "Temizle — kod/unvan/ara alanlarini temizler",
+      "Yazdir / Dizayn — grid yazdirma/kolon dizayni",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Filtreler string birlestirmeyle uretilir."
+  },
+  "FrmMikroStokListesi": {
+    "Baslik": "Mikro Stok Listesi",
+    "Amac": "Mikro ERP stok kartlarini ana grup, stok cinsi ve kod/ad ile arar ve listeler. Recete tasarim ekranlarinda stok secimi icin acilir.",
+    "Onkosul": "Mikro DB ve stok grubu ayari hazir olmali. Secim modunda SecimIcinAcildi set edilmeli.",
+    "Sonra": "Salt-okunur. Secim modunda secilen stok (kod) dondurulur, form kapanir.",
+    "Butonlar": [
+      "Ara — filtreli listeyi yukler",
+      "Temizle — stok kodu/ad/grup/ara alanlarini temizler",
+      "Kapat / Yazdir / Dizayn — taban form butonlari",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Stok cinsi secilmezse cins filtresi uygulanmaz."
+  },
+  "FrmMikroSiparisListesi": {
+    "Baslik": "Mikro Siparis Listesi",
+    "Amac": "Mikro ERP'deki acik/kapali satis siparislerini tarih ve cari ile listeler; secilen siparisin satirlarini alt grid'de gosterir. Sag tik ile Mikro siparisinden is emri olusturulur.",
+    "Onkosul": "Mikro ve uretim DB hazir olmali. Is emri olusturmak icin ilgili Mikro stok kodlarina eslesen receteler tanimli olmali.",
+    "Sonra": "Listeleme salt-okunur. Sag tik Uretim Emri Olustur/Guncelle FrmMikroUretimEmriOlustur acar; kayit sonrasi siparis aktarildi olarak isaretlenir.",
+    "Butonlar": [
+      "Ara — filtreli liste + ilk siparisin hareketlerini yukler",
+      "Temizle — kod/ad/ara/tarih filtrelerini temizler",
+      "Kapali Siparisler — acik/kapali siparis gecisi",
+      "Uretim Emri Olustur/Guncelle (sag tik) — is emri olusturma ekranini acar",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Bu ekrandan olusan is emri, recete uzerinden ileride operasyon/istasyon yapisina baglanir.",
+    "Notlar": "Uretime aktarilmis siparis satirlari yesil gosterilir."
+  },
+  "FrmMikroReceteListesi": {
+    "Baslik": "Mikro Recete Listesi",
+    "Amac": "Mikro ERP urun recetelerini listeler; secilen recetenin uretim DB karsiligini ve operasyonlarini alt gridlerde gosterir. Sag tik ile receteyi ice aktarma ve fire yuzdesi guncelleme yapilir.",
+    "Onkosul": "Uretim ve Mikro DB baglantilari hazir olmali.",
+    "Sonra": "Listeleme salt-okunur. Sag tik Receteyi Iceri Aktar FrmReceteED (Mikrodan aktar) acar; Fire Yuzde Guncelle ilgili ekrani acar.",
+    "Butonlar": [
+      "Ara — listeyi yukler (iptal olmayan + filtre)",
+      "Temizle — arama alanini temizler",
+      "Receteyi Iceri Aktar (sag tik) — receteyi uretim DB'ye aktarir",
+      "Recete Fire Yuzde Guncelle (sag tik) — fire yuzdesi guncelleme ekranini acar",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Uretim DB recetesinin operasyonlari (Sira bazli) bu ekranda izlenebilir.",
+    "Notlar": "Uretime aktarilmis receteler yesil gosterilir; durum filtresi Aktif/Pasif/Tumu."
+  },
+  "FrmMikroUretimEmriOlustur": {
+    "Baslik": "Mikro Uretim Emri Olustur",
+    "Amac": "Secilen bir Mikro satis siparisinden, satirlardaki stok kodlarina eslesen uretim recetelerini bularak otomatik bir uretim is emri (MikroSiparis turu) olusturur.",
+    "Onkosul": "Mikro siparis secilip set edilmis olmali. Her Mikro stok kodu icin eslesen bir recete tanimli olmali; yoksa hata verir ve form kapanir.",
+    "Sonra": "Kaydet uretim DB Siparis/SiparisHareket/SiparisHareketDetay tablolarina yazar, cagiran liste yenilenir ve FrmUretimEmriED acilir; bu form kapanir.",
+    "Butonlar": [
+      "Kaydet — is emrini kaydeder ve duzenleme formuna gecer",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Olusan is emri sonradan FrmUretimEmriED'de operasyon/istasyon yapisiyla devam eder; recetenin operasyon sirasi akisin temelidir.",
+    "Notlar": "Hareketler Mikro siparis satirina baglanir (geri izlenebilirlik)."
+  },
+  "FrmMikroReceteFireGuncelle": {
+    "Baslik": "Mikro Recete Fire Yuzde Guncelle",
+    "Amac": "Mikro recetesindeki tuketim kalemlerinin fire yuzdelerini, uretim DB'ye aktarilmis recetenin detaylarina toplu olarak gunceller. Ust grid Mikro referans, alt grid duzenlenebilir uretim recetesidir.",
+    "Onkosul": "FrmMikroReceteListesi sag tikinden acilmis ve Mikro recete kodu set edilmis olmali. Recete daha once uretim DB'ye aktarilmis olmali.",
+    "Sonra": "Kaydet uretim DB recete detayindaki fire yuzdelerini gunceller, mesaj verip form kapanir.",
+    "Butonlar": [
+      "Kaydet — fire yuzde guncellemeyi yazar",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Mikro detay sirasi ile uretim DB detay sirasi eslestirilerek fire yuzdesi tasinir."
+  },
+  "FrmMikroyaUretimKaydetV2": {
+    "Baslik": "Mikroya Uretim Kaydet",
+    "Amac": "Modulun ana yazma ekrani. Tamamlanmis bir is emrinin sonuclarini (uretilen urun + fire + sarf stoklar + stok firesi) Mikro ERP'ye stok hareketi fisleri olarak kaydeder.",
+    "Onkosul": "Is emri uretim girisleri tamamlanmis olmali. Siparis listesinden acilir; Mikro entegre ayarlari ve istasyon ayarlari yuklu olmali. Daha once aktarildiysa eski fisleri silme uyarisi cikar.",
+    "Sonra": "Kaydet urun giris/fire ve stok cikis/fire fislerini olusturur, maliyet hesaplar, fis turune gore Mikro STOK_HAREKETLERI'ne transaction'da yazar; basarida is emri Ent=1 + evrak seri/sira islenir ve Kaydet pasiflesir.",
+    "Butonlar": [
+      "Kaydet — tum uretim/fire/sarf fislerini Mikro'ya yazar",
+      "Yazdir — kalite raporunu yazdirir",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Uretim akisinin sonundadir; istasyon takip hareketleriyle biriken miktarlar burada Mikro'ya aktarilir. Akis motoru is emri tarafinda calismis ve miktarlar toplanmistir; burada okunup fise donusturulur.",
+    "Notlar": "Birim donusumu Mikro birim katsayilariyla yapilir; mal kabul kullaniliyorsa parti/lot bazinda dagitim hesaplanir."
+  },
+  "FrmMikroyaSarfFireKaydet": {
+    "Baslik": "Mikroya Sarf Fire Kaydet",
+    "Amac": "Istasyon takip hareket detaylarindan dogan ara sarf cikis ve fire giris fislerini Mikro ERP'ye stok hareketi olarak kaydeder. Tam is emri kapatmadan istasyon bazli aktarim icin kullanilir.",
+    "Onkosul": "FrmIstasyonFisList'ten aktarilacak fis listesiyle acilmis olmali. Acilista mukerrer aktarim kontrolu yapilir; varsa Kaydet gizlenir.",
+    "Sonra": "Kaydet her detayi turune ve ayardaki fis turune gore Mikro'ya yazar; basarida her fis kaydina aktarildi bilgisi (Ent + seri/sira/tarih) yazilir.",
+    "Butonlar": [
+      "Kaydet — sarf/fire fislerini Mikro'ya aktarir ve detaylari aktarildi isaretler",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Saha akisindaki istasyon bazli sarf/fire kayitlarini is emri tam kapanmadan Mikro'ya aktarir (ara aktarim).",
+    "Notlar": "Her detaya benzersiz kod atanip mukerrer aktarim tespiti yapilir."
+  },
+  "FrmMikroMalKabulHesaplama": {
+    "Baslik": "Mikro Mal Kabul Hesaplama",
+    "Amac": "Mal kabul fisleri ile istasyon kullanim hareketlerini eslestirip hangi stok/parti/lot'tan ne kadar dusulecegini hesaplayan onizleme/dogrulama ekranidir.",
+    "Onkosul": "Acan form (Mikroya Uretim Kaydet) mal kabul fisi, istasyon hareket ve partili fire listelerini doldurmali. Mal kabul senaryosu icin anlamlidir.",
+    "Sonra": "Salt hesaplama/onizleme; DB'ye yazmaz. Hesaplanan dagitim ve kalan listeleri gridlere basilir.",
+    "Butonlar": [
+      "Hesapla — hesaplanan ve kalan listeleri gosterir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Menude degil; Mikroya Uretim Kaydet ekrani icinden yardimci olarak acilir. Asil kayit orada yapilir."
+  },
+  "FrmMikroUretimKaydedilenFisler": {
+    "Baslik": "Mikro Uretim Kaydedilen Fisler",
+    "Amac": "Bir is emri icin Mikro'ya daha once aktarilmis stok hareketi fislerini listeler ve secilenleri Mikro'dan silmeyi saglar. Yanlis/tekrar aktarim sonrasi temizlik ve yeniden aktarim icindir.",
+    "Onkosul": "Siparis listesinden belge no ve is emri set edilerek acilir; o is emrine ait Mikro fisleri var olmali.",
+    "Sonra": "Sil secili fisleri Mikro STOK_HAREKETLERI ve bagli kayitlardan siler. Tum fisler silindiyse is emrinin entegrasyon bayraklari temizlenir; liste yenilenir.",
+    "Butonlar": [
+      "Sil — secili fisleri Mikro'dan siler (onay sorar)",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Mal kabul fisi turu listeden haric tutulur; silme yalnizca bu uygulamanin actigi fislere uygulanir."
+  },
+  "FrmSiparisListesi": {
+    "Baslik": "Siparis / Recete Uretim Listesi",
+    "Amac": "Siparis ve recete uretim emirlerinin ana liste ekranidir. Ust grid siparisleri, alt grid secili siparisin hareketlerini gosterir. Sag tik menusunden uretim emri olusturma/baslatma ve tum orkestrasyon islemleri yapilir.",
+    "Onkosul": "Kullanici girisi yapilmis ve baglantilar/ayarlar dolu olmali. Islem yapmak icin once siparis kayitli olmali.",
+    "Sonra": "Acilista otomatik yuklenir. Secilen islemlere gore uretim emri/operasyon/istasyon kayitlari olusur, ilk istasyonlara is dusurulur, miktarlar guncellenir, Mikro'ya uretim yazilir veya iptal iadesi islenir.",
+    "Butonlar": [
+      "Ara — filtre + tarihe gore siparis listesini yeniler",
+      "Temizle — filtre kutularini temizler",
+      "Siparis / Uretim Ekle — turune gore siparis veya recete uretim kayit ekrani acar",
+      "Uretime Emri — secili siparis icin uretim emri olusturur",
+      "Yazdir / YazdirTek — siparisi tek veya hareket basina yazdirir",
+      "Durum / Kapandi filtre butonlari — duruma gore hizli filtre",
+      "Uretim Emri Olustur/Baslat (sag tik) — emir olusturur ve isteğe gore baslatir",
+      "Ilk Istasyonlara Gonder (sag tik) — isi ilk istasyon kuyruguna koyar",
+      "Uretilen Adetleri Guncelle (sag tik) — istasyon hareketlerini siparise yansitir",
+      "Mikroya Uretim Gonder (sag tik) — uretim fisini Mikro'ya gonderir",
+      "Mal Kabul Fisi / Iptal Iadesi (sag tik) — ilgili ekranlari acar",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Istasyon-sira motoruyla ana baglanti noktasidir. Ilk Istasyonlara Gonder isi Sira=1 operasyonun bekleyen kuyruguna koyar; Uretilen Adetleri Guncelle hareketleri Sira bazinda yukari toplar. Mikroya gonderme/iptal iadesi yalniz Hazir durumdaki siparislerde calisir.",
+    "Notlar": "Turu (Siparis/Recete/MikroSiparis) disaridan set edilerek ayni form 3 baslik/davranisla acilir."
+  },
+  "FrmSiparisEd": {
+    "Baslik": "Siparis Kayit",
+    "Amac": "Musteri siparisi basligi ve recete satirlarinin girildigi/duzenlendigi kayit formu. Cari, siparis kodu, tarih/teslim, kargo, e-posta girilir; grid'e recete grubu/tekil recete eklenir ve malzeme detaylari panelle ayarlanir.",
+    "Onkosul": "Receteler tanimli, Mikro stok ve cari listesi erisilebilir olmali. Duzenleme icin IdGuid set edilir.",
+    "Sonra": "Kaydet siparisi, hareketleri ve detaylari transaction'da upsert eder (hareket/detay sil-yaz). Kayit sonrasi liste yenilenir; e-posta varsa sorulup gonderilir. Uretim baslamissa form salt-okunur olur.",
+    "Butonlar": [
+      "Kaydet — parti-takip kontrolu sonrasi siparisi kaydeder",
+      "Sil — bagli hareket kontrolu sonrasi siparisi siler",
+      "Recete Grup Sec (F5) — recete grubu satirlarini ekler",
+      "Recete Sec (F6) — tek recete ekler",
+      "Recete Degistir (F7) — secili satirin recetesini degistirir",
+      "Recete Sil (F8) — secili recete satirini cikarir",
+      "Yazdir / YazdirTek — siparisi yazdirir",
+      "Mail Gonder — siparis fisini e-posta ile gonderir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Dolayli; secilen recete ileride uretim emri ve operasyon-sira zincirini belirler. Bu form istasyona is dusurmez; uretim baslamissa kilitlenir.",
+    "Notlar": "Parti takipli urunde parti no zorunlu (ilgili ayar acikken)."
+  },
+  "FrmSiparisReceteEd": {
+    "Baslik": "Recete Uretim Kayit",
+    "Amac": "Dahili recete uretim emri (Recete turu) kayit formu. Siparis kayit ekranina benzer ama evrak no Uretim serisinden alinir, cari opsiyoneldir ve parti/lot/beden takip kurallari daha siki uygulanir.",
+    "Onkosul": "Receteler tanimli, Mikro stok/renk listeleri erisilebilir. Duzenleme icin IdGuid; uretim baslamamis olmali (baslamissa salt-okunur).",
+    "Sonra": "Kaydet ayni Siparis/Hareket/Detay tablolarina Recete turuyle yazar; kayit oncesi parti/lot/beden takip kurallari dogrulanir. Liste yenilenir.",
+    "Butonlar": [
+      "Kaydet — parti/beden/parti-lot kontrolleri sonrasi kaydeder",
+      "Sil — bagli hareket kontrolu sonrasi siler",
+      "Recete Grup Sec (F5) — recete grubu ekler",
+      "Recete Sec (F6) — tek recete ekler",
+      "Recete Degistir (F7) — secili satirin recetesini degistirir",
+      "Recete Sil (F8) — secili recete satirini cikarir",
+      "Cari Sec / Cari Temizle — opsiyonel cari secer/temizler",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Siparis Kayit ile ayni; recete secimi ileri uretim operasyon-sira zincirini tanimlar, form dogrudan istasyona is dusurmez.",
+    "Notlar": "Beden kolonu duzenlenebilir; hareket yoksa kayit engellenir."
+  },
+  "FrmSiparisHareketSec": {
+    "Baslik": "Siparis Hareket Sec",
+    "Amac": "Baska ekranlardan cagrilan secim listesi: siparis hareketlerini filtreleyip tekini secip dondurur. Tek grid uzerinde cari/siparis/durum/tarih filtreleriyle calisir.",
+    "Onkosul": "Secim modunda (SecimIcinAcildi) acilmis olmali.",
+    "Sonra": "Cift tik / Enter ile secili hareket dondurulur ve form kapanir (tablo degistirmez).",
+    "Butonlar": [
+      "Ara — filtreyle hareket listesini yeniler",
+      "Temizle — filtre kutularini sifirlar",
+      "Kapat — secmeden kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Salt secim formudur; veri yazmaz."
+  },
+  "FrmUretimIptalleriDepoyaAktar": {
+    "Baslik": "Uretim Iptalleri Depoya Aktar",
+    "Amac": "Uretim sirasinda iptal edilen miktarlara karsilik gelen tuketilmis hammadde/malzemeyi yerel depoya geri (iade) fisi olarak aktaran kayit formu. Otomatik hesaplanan iade satirlari duzenlenip kaydedilir.",
+    "Onkosul": "Liste ekranindan Iptal Iadesi ile is emri set edilerek acilir; siparis Hazir durumda olmali ve iptal miktari olan satirlar bulunmali (yoksa uyari cikar).",
+    "Sonra": "Kaydet iade miktarini hesaplayip UretimIade fisini (DepoStokFis + DepoStokHareket) yazar; ardindan is emri iptal entegrasyon bilgileri set edilir. Kaydet sonrasi devre disi kalir.",
+    "Butonlar": [
+      "Kaydet — depoda kayitli stok kontrolu sonrasi iade fisini yazar",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Akisin son tarafindadir; istasyon hareketlerindeki iptal miktarlarinin hammadde karsiligini depoya iade eder. Akis motorunu calistirmaz, sadece sonuclarini okur.",
+    "Notlar": "Yalnizca Hazir durumdaki siparislerde anlamlidir; iade satirlari (miktar/parti/lot/tarih) duzenlenebilir."
+  },
+  "FrmKullaniciKayit": {
+    "Baslik": "Kullanici Kaydi",
+    "Amac": "Uygulamaya giris yapacak kullanicilari listeler ve ekleme/duzenleme/silme yapar. Kullanici adi, sifre, ad, soyad ve admin bayragi yonetilir.",
+    "Onkosul": "Uygulamaya giris yapilmis ve baglanti kurulmus olmali. Ana ekrandan Kullanicilar butonu ile acilir; pratikte admin kullanicilar erisir.",
+    "Sonra": "Kaydet kullaniciyi (sifre AES sifreli) ekler/gunceller; grid yenilenir. Sil secili kullaniciyi siler. Bu kayitlar girise dogrulamada okunur.",
+    "Butonlar": [
+      "Kaydet — kullaniciyi sifreyi sifreleyip yazar",
+      "Sil — onay sonrasi secili kullaniciyi siler",
+      "Duzenle — secili kaydi forma yukler (sifre cozulerek)",
+      "Yeni — alanlari temizler",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Sifreler DB'de AES sifreli saklanir; kullanici adi/sifre buyuk-kucuk harf duyarsizdir. Ilk kullanici (Admin/1) login ekraninda otomatik olusturulur."
+  },
+  "FrmPersonelKartlari": {
+    "Baslik": "Personel Kaydi",
+    "Amac": "Personel kartlarini listeler ve ekleme/duzenleme/silme yapar. Kodu, ad, soyad, grup, gorev, cep tel, sifre ile yetkili/admin/istasyon personeli/SMS bayraklarini ve istasyon eslestirmesini yonetir.",
+    "Onkosul": "Ana ekrandan Personel Kartlari butonuyla acilir. Sayac, grup/gorev combolari ve istasyon combosu icin ilgili tablolar hazir olmalidir.",
+    "Sonra": "Kaydet personeli ekler/gunceller (sifre girilmisse hash'lenir, girilmemisse degismez); grid yenilenir. Sil secili personeli siler.",
+    "Butonlar": [
+      "Yeni — kayit grubunu aktiflestirip yeni kayit hazirlar",
+      "Kaydet — kod/sifre/mukerrer kontrolleri sonrasi personeli yazar",
+      "Sil — onay sonrasi secili personeli siler",
+      "Duzenle — secili personeli forma yukler",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Akis motoruyla dogrudan etkilesmez; ancak istasyon personeli olarak bir istasyona baglanan personel, tablet istasyon takip akisinda o istasyonda calisani temsil eder.",
+    "Notlar": "Guncellemede sifre bos birakilirsa degismez; SMS icin gorev BAKIM/PLANLAMA olmali ve SMS gonder isaretli olmali. Admin kodlu kaydin kod/ad alanlari salt-okunurdur."
+  },
+  "FrmLogin": {
+    "Baslik": "Uygulama Girisi",
+    "Amac": "Ana ERP uygulamasinin kullanici giris ekranidir. Kullanici adi/sifre dogrulamasi yapar ve basariliysa global Mikro/uretim DB baglantilarini kurar.",
+    "Onkosul": "Baglanti ayar dosyalari tanimli olmali. Son kullanilan kullanici adi ayar dosyasindan doldurulur. FrmAna acilisinda modal acilir.",
+    "Sonra": "Giris basariliysa kullanici adi kaydedilir ve form kapanir; kontrol ana ekrana doner (lisans kontrolu + masaustu acma). Basarisizsa uyari verilir.",
+    "Butonlar": [
+      "Giris (F2) — kullanici/sifre dogrulamasini calistirir",
+      "Kapat (Esc) — formu kapatir (giris yapilmadan kapanirsa uygulama sonlanir)",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Kullanici tablosu bossa otomatik Admin/1 ilk kullanici eklenir; kullanici adi/sifre buyuk-kucuk harf duyarsizdir. Modul bazli yetki bu formda kontrol edilmez."
+  },
+  "FrmLisansGiris": {
+    "Baslik": "Lisans Kaydi",
+    "Amac": "Donanima (islemci ID'si) bagli lisans anahtarini olusturup lisans dosyasina yazan ekran. Uretici tarafindan uretilen karsilik degeri girilince lisans aktiflesir.",
+    "Onkosul": "Lisans pasifken acilir. Acilista makinenin islemci seri numarasindan uretilen Key gosterilir.",
+    "Sonra": "Girilen karsilik dogruysa lisans dosyasi guncellenir ve uygulama yeniden baslatilir. Yanlissa lisans gecersiz mesaji.",
+    "Butonlar": [
+      "Kaydet — karsiligi dogrular, uyarsa dosyaya yazip uygulamayi yeniden baslatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Lisans makine basinadir; lisans pasifken Recete ve Kullanicilar butonlari kapali kalir."
+  },
+  "FrmMasaustu": {
+    "Baslik": "Masaustu (Favori Dugmeler)",
+    "Amac": "Ana ekran icinde acilan, kullanicinin kendi favori kisayol dugmelerini tasarlayip yerlestirdigi panel. Dugmeye tiklayinca ilgili modul formu acilir.",
+    "Onkosul": "Login basarili olduktan sonra ana ekran tek instance halinde acar. Acilista dugme listesi dosyadan okunur.",
+    "Sonra": "Duzenleme modunda yapilan degisiklikler ayar dosyasina kaydedilir. Normal modda dugmeye tiklaninca ilgili form acilir.",
+    "Butonlar": [
+      "Duzenle (sag tik) — duzenleme modunu acar (dugmeler tasinabilir)",
+      "Kaydet (sag tik) — duzenleme modunu kapatip ayarlari yazar",
+      "Iptal (sag tik) — duzenleme modunu kapatir",
+      "Yeniden Isimlendir (sag tik) — secili dugmeye yeni isim verir",
+      "Renk (sag tik) — secili dugmenin arka plan rengini degistirir",
+      "Butonu Kaldir (sag tik) — onay sonrasi secili dugmeyi siler",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Dolayli; masaustu dugmesi istasyon takip ekranini acabilir, ancak akis mantigi ilgili modullerdedir.",
+    "Notlar": "Yeni favori dugme ana ekran ribbon'undan eklenir; dugme ayarlari JSON dosyasinda saklanir."
+  },
+  "FrmGenelAyarlar": {
+    "Baslik": "Genel Ayarlar",
+    "Amac": "Genel kapsamdaki uygulama ayarlarini listeleyip degerlerini duzenler. Sadece mevcut kayitlarin deger/aciklama alani guncellenir; yeni kod ekleme/silme aktif degildir.",
+    "Onkosul": "DB Guncelle ile Ayar tablosundaki Genel kayitlari olusturulmus olmali. Ana ekran ribbon'undan acilir.",
+    "Sonra": "Kaydet ayar kaydini yazar, grid yeniden baglanir ve RAM'deki ayar cache'i tazelenir.",
+    "Butonlar": [
+      "Kaydet — ayari yazar ve cache'i tazeler",
+      "Duzenle — secili satiri alanlara aktarir",
+      "Yeni — alanlari temizler",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Kod alani salt-okunur; sadece var olan ayarin degeri/aciklamasi guncellenir. Silme pasiftir."
+  },
+  "FrmMikroEntAyarlari": {
+    "Baslik": "Mikro Entegre Ayarlari",
+    "Amac": "Mikro ERP entegrasyonunun beyni. Mikro firma/kullanici kodu ve her uretim hareketinin (urun giris, stok cikis, fire, sarf, hizli uretim) Mikro'da hangi fis turune yazilacagini belirler; ayrica tum ayar detaylarini grup grup duzenler.",
+    "Onkosul": "DB Guncelle ile MikroEntegre ayar kayitlari olusturulmus olmali. Ana ekran ribbon'undan acilir.",
+    "Sonra": "Genel Kaydet tum genel/fis-turu degerlerini topluca yazar; alt grid Kaydet tek detay kaydini yazar. Her ikisinde cache tazelenir. Bu ayarlar Mikro'ya kayit ekranlarinda okunur.",
+    "Butonlar": [
+      "Genel Kaydet — firma/kullanici kodu ve fis turu degerlerini topluca yazar",
+      "Kaydet — secili detay ayar satirini yazar",
+      "Duzenle — secili satiri alanlara aktarir",
+      "Yeni — alanlari temizler",
+      "Ayarlari Sil — tum MikroEntegre ayarlarini sifirlar",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Dolayli; buradaki fis turu ayarlari istasyon/operasyon sonunda Mikro'ya fis yazilirken kullanilir.",
+    "Notlar": "Sekmeler ayar fis turu gruplarina gore dinamik doldurulur; kod alani salt-okunur."
+  },
+  "FrmIstasyonUretimAyarlari": {
+    "Baslik": "Istasyon Uretim Ayarlari",
+    "Amac": "Saha/istasyon uretim davranis ayarlarini listeleyip duzenler (orn. mal kabul ozelliginin acik/kapali olmasi).",
+    "Onkosul": "DB Guncelle ile IstasyonUretim ayar kayitlari olusmus olmali. Ana ekran ribbon'undan acilir.",
+    "Sonra": "Kaydet ayar kaydini yazar ve grid yenilenir; istasyon ayar cache'i (mal kabul vb. bayraklar) tazelenir.",
+    "Butonlar": [
+      "Kaydet — ayari yazar",
+      "Duzenle — secili satiri alanlara aktarir",
+      "Yeni — alanlari temizler",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Dogrudan; buradaki ayarlar (orn. mal kabul kullan) saha istasyon takip akisini etkiler.",
+    "Notlar": "Genel Ayarlar ile ayni yapida; silme pasiftir."
+  },
+  "FrmSmsAyarlari": {
+    "Baslik": "SMS Ayarlari",
+    "Amac": "SMS gonderim saglayicisi bilgilerini (kullanici kodu, sifre, baslik, gonderim/rapor URL) tutar. Ayri bir SMS ayar tablosu kullanir ve tam CRUD (silme dahil) aktiftir.",
+    "Onkosul": "DB Guncelle ile SMS ayar tablosu olusmus olmali. Ana ekran ribbon'undan acilir.",
+    "Sonra": "Kaydet SMS ayarini yazar; bu degerler SMS gonderim/rapor modulunce kullanilir.",
+    "Butonlar": [
+      "Kaydet — zorunlu alan kontrolu sonrasi ayari yazar",
+      "Duzenle — secili satiri alanlara aktarir",
+      "Yeni — alanlari temizler",
+      "Sil — onay sonrasi ayari siler",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Silmenin gercekten calistigi tek ayar ekrani; 5 alan da zorunludur."
+  },
+  "FrmMesajGenel": {
+    "Baslik": "Acil Mesaj",
+    "Amac": "Uygulama genelinde gosterilecek tek bir acil duyuru mesajini zengin metin olarak duzenler.",
+    "Onkosul": "DB Guncelle ile mesaj kaydi mevcut olmali. Ana ekran ribbon'undan acilir; acilista mevcut mesaj yuklenir.",
+    "Sonra": "Kaydet mesaji gunceller ve form kapanir; mesaj acil duyuru gosteren yerlerde okunur.",
+    "Butonlar": [
+      "Kaydet — mesaji yazar ve formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Tek kayit uzerinde calisir; yeni mesaj olusturmaz, var olani gunceller."
+  },
+  "FrmStokKodGuncelle": {
+    "Baslik": "Stok Kodu Guncelleme",
+    "Amac": "Bir stok kodunu sistem genelinde baska bir koda toplu olarak degistirir. Mikro'da stok kodu degistiginde uretim DB'sindeki tum ilgili tablolardaki referansi tek transaction'da gunceller.",
+    "Onkosul": "Ana ekrandan acilir; kullanici eski ve yeni stok kodlarini girer.",
+    "Sonra": "Onay sonrasi 9 tabloda (depo/uretim/recete/siparis/fis) stok kodu referansi guncellenir; hata olursa rollback yapilir.",
+    "Butonlar": [
+      "Kaydet — onay sonrasi stok kodunu tum tablolarda gunceller",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Dolayli; uretim/recete/siparis hareketlerindeki stok kodu referanslarini gunceller, akis sirasini degistirmez.",
+    "Notlar": "Stok kodu dikkatli girilmelidir; islem geri alinamaz (transaction basarisizsa rollback)."
+  },
+  "FrmMailSettings": {
+    "Baslik": "Mail Ayarlari",
+    "Amac": "SMTP gonderici hesaplarinin (host, port, mail adres, sifre, gorunen ad, SSL, varsayilan konu/body) listelendigi ve eklenip/guncellenip/silindigi ayar ekranidir.",
+    "Onkosul": "Uygulamaya giris yapilmis ve baglantilar hazir olmali. Ana menuden acilir; mail ayar tablosu olmali.",
+    "Sonra": "Kaydet SMTP hesabini (sifre sifreli) ekler/gunceller. Sil ilgili hesabi siler. Her islemden sonra grid yenilenir.",
+    "Butonlar": [
+      "Yeni — form alanlarini bosaltir",
+      "Kaydet — zorunlu alan kontrolu sonrasi hesabi yazar",
+      "Sil — onay sonrasi hesabi siler",
+      "Test Mail — test maili gonderme formunu acar",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Sifre DB'de simetrik sifreli tutulur; gonderimde genelde ilk ayar kullanilir."
+  },
+  "FrmMailGonderOrnek": {
+    "Baslik": "Test Mail Gonder",
+    "Amac": "Kayitli SMTP ayarinin gercekten mail gonderebildigini dogrulamak icin manuel/test e-postasi gonderme ekranidir (ek dosya yok).",
+    "Onkosul": "En az bir gecerli mail ayari olmali. FrmMailSettings icindeki Test Mail butonundan acilir.",
+    "Sonra": "Gonder ilk ayarla test maili atar; sonuc bilgi/hata mesajiyla bildirilir. Veritabaninda degisiklik yapmaz.",
+    "Butonlar": [
+      "Gonder — ilk ayarla test maili gonderir",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Her zaman ilk ayar kullanilir; mail body HTML olarak gonderilir."
+  },
+  "FrmFisMailGonder": {
+    "Baslik": "Siparis Mail Gonder",
+    "Amac": "Bir siparis fisini PDF veya XLSX'e cevirip secilen mail adresine ek olarak gonderen ekrandir. Govde bir log alanidir; her adim oraya yazilir. Otomatik gonderim modunu destekler.",
+    "Onkosul": "Gonderilecek siparis hazirlanmis/secilmis olmali. Siparis ekranindan model, mail adresi ve dizayn set edilerek acilir; gecerli mail ayari ve dizayn mevcut olmali.",
+    "Sonra": "Gonderim oncesi mail adresi dogrulanir; dosya render edilip ekli gonderilir. Sonuc log'a yazilir. Otomatik modda gonderim sonrasi form kendini kapatir. DB degistirmez.",
+    "Butonlar": [
+      "Gonder Pdf (Varsayilan) — siparisi PDF olarak ekli gonderir",
+      "Gonder Xlsx — siparisi XLSX olarak ekli gonderir",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Genel mail gonderimi degil, siparis fisi e-posta gonderimine ozeldir; ilk mail ayari kullanilir."
+  },
+  "FrmSmsRapor": {
+    "Baslik": "SMS Raporu",
+    "Amac": "Iki tarih arasinda NetGSM uzerinden gonderilmis SMS'lerin durum/teslim raporunu NetGSM rapor servisinden cekip grid'de listeler.",
+    "Onkosul": "SMS ayarlari (FrmSmsAyarlari'nda) onceden girilmis olmali; kayit yoksa rapor cekilemez. Ana ekran ribbon'undan acilir.",
+    "Sonra": "Veritabani yazilmaz; salt-okunur. Dis NetGSM rapor servisine istek atilir ve sonuc grid'e baglanir; hata mesajla bildirilir.",
+    "Butonlar": [
+      "Ara — tarih araligindaki SMS raporunu ceker",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Manuel SMS gonderme alanlari tasarimda gizli/pasiftir; form pratikte yalniz raporlama yapar. Tarihler elle ayarlanmalidir."
+  },
+  "FrmAciklamaKodlar": {
+    "Baslik": "Aciklama Kodlar",
+    "Amac": "Kodlu aciklama tanimlarinin (kod + deger + sira) tam CRUD ekranidir. Modul turune gore (su an Recete Aciklama) acilir ve sadece o turun kayitlarini yonetir.",
+    "Onkosul": "Form modul turu set edilerek (ana menuden Recete Aciklamalar) acilmali. Aciklama tablosu DB'de mevcut olmali.",
+    "Sonra": "Kaydet kaydi ilgili modul turuyle yazar; liste yenilenir. Sil kaydi siler. Bu kayitlar tuketici ekranlarda acilir liste kaynagi olarak okunur.",
+    "Butonlar": [
+      "Kaydet — kod zorunlu kontrolu sonrasi aciklamayi yazar",
+      "Sil — onay sonrasi kaydi siler",
+      "Yeni — alanlari temizler",
+      "Duzenle — secili satiri forma yukler",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Tanim/sozluk verisidir; akis motorunu etkilemez. Sira sutunu duzenlenebilir ve listeleme sira/koda gore yapilir."
+  },
+  "FrmIstasyonRaporu": {
+    "Baslik": "Istasyon Raporu",
+    "Amac": "Belirli tarih/saat araliginda istasyon ve personel filtresiyle gerceklesen uretim hareketlerini iki gridde gosterir: ust grid gun+stok+istasyon+personel kirilimli, alt grid stok bazli toplamlar.",
+    "Onkosul": "Saha akisinda istasyon takip hareketleri girilmis olmali. Personel/istasyon kartlari tanimli olmali (combolar icin).",
+    "Sonra": "Salt-okunur rapor; yazma yok. Ara sonrasi gridler doldurulur.",
+    "Butonlar": [
+      "Ara — filtreleri uygulayip her iki gridi doldurur (acilista otomatik)",
+      "Temizle — filtre temizleme",
+      "Yazdir — grid yazdirma",
+      "Dizayn — kolon/yerlesim dizayni",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Dogrudan istasyon bazli; istasyon ve personel filtresiyle daraltilabilir. Operasyon-Sira mantigi yoktur, hareketin istasyon koduna gore raporlar.",
+    "Notlar": "Saat alanlari tarih ile birlestirilip aralik olusturur."
+  },
+  "FrmReceteKullanilanStokList": {
+    "Baslik": "Recete Kullanilan Stok Listesi",
+    "Amac": "Tum recete detay satirlarini (her recetede kullanilan stoklar) tek duz listede gosterir; recete kodu/adi veya varsayilan stok kodu/adi ile aranabilir.",
+    "Onkosul": "Receteler ve recete detaylari tanimlanmis olmali.",
+    "Sonra": "Salt-okunur liste. Cift tik ilgili receteyi FrmReceteED ile acar; kayit edilirse liste yenilenir. Secim modunda recete dondurulur.",
+    "Butonlar": [
+      "Ara — listeyi arama metnine gore filtreler",
+      "Temizle / Yazdir / Dizayn / Kapat — taban form butonlari",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Recete tanim raporudur; uretim/istasyon akisi yoktur."
+  },
+  "FrmReceteRaporu": {
+    "Baslik": "Recete Raporu",
+    "Amac": "Recetelerin genel raporu: her recete icin once recete ust satiri, ardindan detay (kullanilan stok) satirlari sira duzeninde listelenir; fireli miktar dahil hesaplanir.",
+    "Onkosul": "Recete ve recete detay kayitlari olmali; detay cins bilgisi icin Mikro stok temp tablosu dolu olmali.",
+    "Sonra": "Salt-okunur. Cift tik receteyi FrmReceteED ile acar veya secim modunda secer.",
+    "Butonlar": [
+      "Ara — genel rapor sorgusunu calistirir",
+      "Temizle / Yazdir / Dizayn / Kapat — taban form butonlari",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Cursor + gecici tablo kullandigindan buyuk recete sayisinda yavaslayabilir."
+  },
+  "FrmUretimStokTuketimRaporu": {
+    "Baslik": "Uretim Stok Tuketim Raporu",
+    "Amac": "Uretimde tuketilen/giren stoklarin toplu (stok bazli, miktarlari toplanmis) raporu. Uretim/fire/iptal miktarlari ve recete carpaniyla hesaplanan stok miktarlari, Mikro kategori bilgileriyle zenginlestirilmis.",
+    "Onkosul": "Saha uretim akisinda mamul/fire/stok hareketleri girilmis olmali. Acilista Mikro stok/kategori temp tablolari guncellendigi icin Mikro DB erisilebilir olmali.",
+    "Sonra": "Salt-okunur rapor (akisi degistirmez). Acilista yan etki olarak temp ve detay merge tablolari guncellenir. Ara'da grid doldurulur, kayit sayisi durum cubugunda gosterilir.",
+    "Butonlar": [
+      "Ara — toplu raporu calistirir",
+      "Temizle / Yazdir / Dizayn / Kapat — taban form butonlari",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Dolayli; stok tuketim carpani yalnizca ilk operasyon (Sira=1) icin hesaplanir. Raporun kendisinde istasyon kirilimi yoktur (toplu).",
+    "Notlar": "Acilistaki temp guncelleme Mikro DB'ye baglanamazsa rapor verisi gelmez."
+  },
+  "FrmUretimStokTuketimRaporuDetayli": {
+    "Baslik": "Uretim Stok Tuketim Raporu Detayli",
+    "Amac": "Toplu stok tuketim raporunun detayli versiyonu: is emri (siparis) kodu, uretilen mamul ve tuketilen stok kirilimiyla gosterir (hangi is emrinde hangi stoktan ne kadar harcandi).",
+    "Onkosul": "Toplu rapor ile ayni: saha uretim hareketleri girilmis ve Mikro DB erisilebilir olmali. Acilista temp/detay merge tablolari guncellenir.",
+    "Sonra": "Salt-okunur. Acilista ayni yan etkiler; Ara'da grid doldurulur, kayit sayisi gosterilir.",
+    "Butonlar": [
+      "Ara — detayli raporu calistirir",
+      "Temizle / Yazdir / Dizayn / Kapat — taban form butonlari",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Toplu rapor ile ayni; stok tuketim carpani ilk operasyona (Sira=1) bagli hesaplanir, raporda is emri/mamul kirilimi var ama istasyon-sira kirilimi yok.",
+    "Notlar": "Toplu rapordan tek farki cagrilan servis metodu ve arama kapsamidir."
+  },
+  "FrmHizliUretimEG": {
+    "Baslik": "Hizli Uretim Kayit",
+    "Amac": "Bir recete ve miktar secilerek tek seferde Mikro ERP'ye uretim fisi yazar: mamul giris hareketi + recetedeki hammadde/sarf stoklarin cikis hareketi olusturulur. Istasyon/operasyon adimlari ve is emri yoktur.",
+    "Onkosul": "Mikro entegrasyon ayarlari (hizli uretim fis turu, depo/seri/gider) tanimli olmali. Stok kodu alanindan bir recete secilmis olmali; aksi halde kaydedilemez.",
+    "Sonra": "Kaydet recete detaylarini okuyup mamul giris + sarf cikis hareketlerini olusturur ve secili fis turune gore Mikro STOK_HAREKETLERI'ne transaction'da yazar. Basarida Kaydet pasiflesir. Uretim DB'ye yazma yapilmaz.",
+    "Butonlar": [
+      "Kaydet — fisi olusturup Mikro'ya yazar",
+      "Kapat — formu kapatir",
+      "Stok Kodu / Stok Adi (buton) — recete secim penceresini acar",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Yoktur; istasyon/operasyon zincirini tamamen atlar. Yalnizca recetenin malzeme listesi uretim sarfini hesaplamak icin kullanilir.",
+    "Notlar": "Cikis miktari recete detay miktari x mamul miktari + fire payi olarak hesaplanir; miktar 0'dan buyuk olmali. Tum hareketler hizli uretim olarak isaretlenir."
+  },
+  "FrmAna": {
+    "Baslik": "Ana Ekran (Kabuk)",
+    "Amac": "Ana ERP uygulamasinin ribbon menulu MDI ana penceresidir. Tum modul ekranlarini (siparis, recete, uretim, istasyon, mikro, raporlar, ayarlar, kullanici/personel) ribbon butonlari uzerinden acar. Alt durum cubugunda kullanici, lisans, firma DB ve versiyon gosterilir.",
+    "Onkosul": "Baglanti ayar dosyalari tanimli olmali. Yuklenirken sirayla guncelleme kontrolu, login ve lisans kontrolu yapilir.",
+    "Sonra": "Login basariliysa masaustu acilir, baglantilar kurulur, ayarlar yuklenir ve Mikro stok temp tablolari senkronlanir. Lisans pasifse Recete/Kullanicilar butonlari devre disi kalir.",
+    "Butonlar": [
+      "Modul butonlari — ilgili ekrani acar (Siparisler, Receteler, Uretim Emirleri, Operasyon/Istasyon Takip, Mikro, Raporlar vb.)",
+      "Kullanicilar / Personel Kartlari — kullanici ve personel CRUD ekranlarini acar",
+      "Lisans Kayit — lisans anahtari girisini acar",
+      "Ayarlar (Mikro Entegre / Genel / Istasyon / SMS / Mail) — ilgili ayar ekranlarini acar",
+      "DB Guncelle — veritabani sema guncellemesini calistirir",
+      "Tum Sekmeleri Kapat — acik MDI pencerelerini kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "Kabuk/menu formu; uretim akisi veya istasyon sirasiyla dogrudan iliskisi yoktur, sadece ilgili ekranlari acar.",
+    "Notlar": "Acilista FTP guncelleme kontrolu yapilir; skin/palet secimleri ayar dosyasinda saklanir."
+  },
+  "FrmDataPanel": {
+    "Baslik": "DB Ayar Kabugu (Yardimci Arac)",
+    "Amac": "Yardimci veritabani yonetim aracinin ana penceresidir. Veritabani baglanti ayarlari, sema olusturma/guncelleme/kontrol ve kullanici/yetki yonetimi islemlerini gruplandiran butonlu kabuk formdur.",
+    "Onkosul": "Arac calistirilir; once tarih tabanli parola ile giris yapilir. Giris yapilmazsa arac kapanir.",
+    "Sonra": "Kullanici ilgili butona basarak DB baglanti stringi tanimlar, sema olusturur/guncelleyebilir/kontrol eder veya kullanici/yetki ayarlarini acar. Sonuc mesajla bildirilir.",
+    "Butonlar": [
+      "Program Baglanti Ayar — uretim DB baglanti ayar formunu acar",
+      "Mikro Baglanti Ayar — Mikro DB baglanti ayar formunu acar",
+      "Database Kontrol — DB var mi kontrol eder, yoksa sema tablolarini olusturur",
+      "Uretim Tablolarini Olustur — uretim sema guncellemesini calistirir",
+      "Depo Kabul Tablolarini Olustur — depo kabul sema guncellemesini calistirir",
+      "Kullanici Ayar Ve Yetkiler — kullanici/yetki yonetim ekranini acar",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Sema/baglanti yonetimini ana uygulamadan ayrik tutar; uretim ortaminda hassas bir aractir (tarih tabanli parola ile korunur)."
+  },
+  "FrmKullaniciAyar": {
+    "Baslik": "Kullanici Ayar ve Yetkiler (Yardimci Arac)",
+    "Amac": "Yardimci aracta uygulamaya giris yapacak kullanicilari listeleyen ve ekleme/duzenleme/silme yapan CRUD ekranidir. Her kullanici icin modul bazli yetki ekranina kapi acar.",
+    "Onkosul": "DB ayar kabugundan acilir; programconnection kurulmus olmali.",
+    "Sonra": "Kaydet kullaniciyi ekler/gunceller (sifre sifreli). Sil once kullanici izinlerini sonra kullaniciyi siler. Yetkiler secili kullanici icin yetki matrisini acar.",
+    "Butonlar": [
+      "Kaydet — kullaniciyi sifreyi sifreleyip yazar",
+      "Yeni — yeni bos kayit hazirlar",
+      "Duzenle — secili kaydi forma yukler (sifre cozulerek)",
+      "Sil — onay sonrasi kullanici izinlerini ve kullaniciyi siler",
+      "Yetkiler — secili kullanici icin modul yetki matrisini acar",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Ana uygulamadaki kullanici kaydiyla ayni tabloyu yonetir; admin ise modul yetki kontrolu pratikte atlanir."
+  },
+  "FrmKullaniciYetkiler": {
+    "Baslik": "Modul Bazli Yetki Matrisi (Yardimci Arac)",
+    "Amac": "Secili bir kullanici icin modul/yetki bazli izinleri (acik/kapali) duzenleyen yetki matrisi ekranidir. Tum yetki tanimlarini kullaniciya verilmis izinlerle birlestirip grid'de gosterir.",
+    "Onkosul": "Kullanici Ayar ekranindan secili kullanici ile acilir; kullanici secilmemisse uyari verip kapanir.",
+    "Sonra": "Kaydet her satir icin izin kaydini ekler/gunceller. Sil ilgili izin kayitlarini siler. Bu yetkiler moduller calistirilirken erisim kontrolu icin okunur.",
+    "Butonlar": [
+      "Kaydet — durum onay kutularini izin tablosuna yazar",
+      "Sil — onay sonrasi izin kayitlarini siler",
+      "Kapat — formu kapatir",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Sadece durum kolonu duzenlenebilir; izin kaydi yoksa varsayilan kapali gelir. Yetki tanimlari onceden seed edilmis olmali."
+  },
+  "FrmDataPaneli": {
+    "Baslik": "DB Baglanti Ayar Paneli (Yardimci Arac)",
+    "Amac": "Tek bir veritabani baglantisinin (uretim veya Mikro) ayarlarini (database adi, sunucu/IP, port, kullanici, sifre) gosterip duzenleyen ve sifreli olarak ayar dosyasina kaydeden paneldir.",
+    "Onkosul": "DB ayar kabugundan hedef DB adi ile acilir; tarih parolasiyla giris yapmis yetkili kullanici erismeli.",
+    "Sonra": "Form yuklenince mevcut ayarlar dosyadan cozulup alanlara doldurulur. Kaydet ayarlari sifreli olarak yazar ve cagiran forma baglantiyi yeniden kurmasi icin sinyal verir.",
+    "Butonlar": [
+      "Kaydet (F2) — ayarlari sifreli olarak yazar",
+      "Kapat (Esc) — formu kapatir",
+      "Database — alanlara ornek/varsayilan deger doldurur",
+      "F1 — bu yardim penceresini acar"
+    ],
+    "Istasyon": "",
+    "Notlar": "Baglanti ayarlari AES anahtariyla sifreli ayar dosyasinda saklanir."
+  }
+}

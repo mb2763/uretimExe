@@ -29,6 +29,7 @@ namespace MyUI
             dosyayolu = Application.StartupPath + "\\FavorilerSettings.json";
             ButonBagla();
             ButonlariOlustur();
+            this.SizeChanged += (s, ev) => YerlestirIzgara();
         }
         private   void FrmMasaustu_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -227,41 +228,19 @@ namespace MyUI
         }
         public void ButonEkle(string Tag)
         {
-            if (butonList == null)
-            {
-                butonList = new List<MasaUstuButonlar>();
-            }
-            var bt = new MasaUstuButonlar()
+            if (string.IsNullOrEmpty(Tag)) return;
+            if (butonList == null) butonList = new List<MasaUstuButonlar>();
+            if (butonList.Exists(x => x.Name == Tag)) return; // zaten favorilerde
+            butonList.Add(new MasaUstuButonlar()
             {
                 Name = Tag,
                 Text = Tag,
-                LocationX = 5,
-                LocationY = 5,
-                SizeX = 200,
-                SizeY = 70
-            };
-            MyButton btn = new MyButton();
-            btn.Text = bt.Text;
-            btn.Name = bt.Name;
-            btn.Tag = bt.Name;
-            Point p = new Point(bt.LocationX, bt.LocationY);
-            Size s = new Size(bt.SizeX, bt.SizeY);
-            btn.MouseDown += button_MouseDown;
-            btn.MouseMove += button_MouseMove;
-            btn.MouseUp += button_MouseUp;
-            btn.Click += button_Click;
-            btn.ContextMenuStrip = btnContext;
-            btn.Location = p;
-            btn.Size = s;
-            btn.LookAndFeel.UseDefaultLookAndFeel = false;
-            btn.Appearance.BackColor = Color.DarkSlateGray;
-            try
-            {
-                btn.Image = MyUI.Properties.Resources.Bayaz_menu_32px1;
-            }
-            catch { }
-            panel1.Controls.Add(btn);
-            ButonRenklendir();
+                SizeX = 230,
+                SizeY = 64,
+                Renk = Color.FromArgb(33, 47, 61)
+            });
+            ButonlariOlustur();
+            AyarKaydet();
         }
         public void ButonBagla()
         {
@@ -279,32 +258,61 @@ namespace MyUI
         public void ButonlariOlustur()
         {
             panel1.Controls.Clear();
+            if (butonList == null) { ButonRenklendir(); return; }
+            var anaForm = this.MdiParent as FrmAna;
             foreach (var itm in butonList)
             {
                 MyButton btn = new MyButton();
-                btn.Text = itm.Text;
                 btn.Name = itm.Name;
                 btn.Tag = itm.Name;
-                Point p = new Point(itm.LocationX, itm.LocationY);
-                Size s = new Size(itm.SizeX, itm.SizeY);
                 btn.MouseDown += button_MouseDown;
                 btn.MouseMove += button_MouseMove;
                 btn.MouseUp += button_MouseUp;
                 btn.Click += button_Click;
+                btn.MouseEnter += button_MouseEnter;
                 btn.ContextMenuStrip = btnContext;
-                btn.Location = p;
-                btn.Size = s;
                 btn.LookAndFeel.UseDefaultLookAndFeel = false;
-                btn.Appearance.BackColor = itm.Renk;
-                btn.AppearanceHovered.BackColor = Color.FromArgb(64, 64, 64);
-                try
+                btn.Appearance.BackColor = (itm.Renk.IsEmpty || itm.Renk.A == 0) ? Color.FromArgb(33, 47, 61) : itm.Renk;
+                btn.AppearanceHovered.BackColor = Color.FromArgb(21, 101, 192);
+                btn.Appearance.ForeColor = Color.White;
+                btn.Appearance.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
+                btn.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
+
+                var rb = anaForm != null ? anaForm.MenuButonBul(itm.Name) : null;
+                string ad = (rb != null && !string.IsNullOrEmpty(rb.Caption)) ? rb.Caption.Replace("\r\n", " ").Replace(".", " ").Trim() : itm.Text;
+                btn.Text = "   " + ad;
+                if (rb != null && rb.ImageOptions.SvgImage != null)
                 {
-                    btn.Image = MyUI.Properties.Resources.Bayaz_menu_32px1;
+                    btn.ImageOptions.SvgImage = rb.ImageOptions.SvgImage;
+                    btn.ImageOptions.SvgImageSize = new Size(30, 30);
+                    btn.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
                 }
-                catch { }
+                else
+                {
+                    try { btn.Image = MyUI.Properties.Resources.Bayaz_menu_32px1; } catch { }
+                    btn.ImageOptions.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
+                }
                 panel1.Controls.Add(btn);
             }
+            YerlestirIzgara();
             ButonRenklendir();
+        }
+
+        /// <summary>Favori butonlarini sirali bir izgaraya yerlestirir.</summary>
+        private void YerlestirIzgara()
+        {
+            int margin = 18, bw = 230, bh = 64, gapx = 14, gapy = 14;
+            int alanW = panel1.ClientSize.Width > 140 ? panel1.ClientSize.Width : 1000;
+            int cols = Math.Max(1, (alanW - margin) / (bw + gapx));
+            int i = 0;
+            foreach (Control c in panel1.Controls)
+            {
+                if (!(c is MyButton)) continue;
+                int col = i % cols, row = i / cols;
+                c.Location = new Point(margin + col * (bw + gapx), margin + row * (bh + gapy));
+                c.Size = new Size(bw, bh);
+                i++;
+            }
         }
         private void AyarKaydet()
         {

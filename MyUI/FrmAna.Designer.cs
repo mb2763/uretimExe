@@ -210,11 +210,11 @@ namespace MyUI
             this.Rib_Ana1.MaxItemId = 169;
             this.Rib_Ana1.OptionsCustomizationForm.FormIcon = ((System.Drawing.Icon)(resources.GetObject("resource.FormIcon")));
             this.Rib_Ana1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
-            this.ribbonPage1,
             this.MnUretim,
+            this.ribbonPage1,
+            this.MnMikro,
             this.MNReceteKartlar,
             this.MNRaporlar,
-            this.MnMikro,
             this.MnPersonel,
             this.MnAyar});
             this.Rib_Ana1.QuickToolbarItemLinks.Add(this.BarUstTumSekmeleriKapat);
@@ -245,7 +245,7 @@ namespace MyUI
             this.RibMikroGroup.ItemLinks.Add(this.BarBtnMikroReceteListesi);
             this.RibMikroGroup.ItemLinks.Add(this.btnStkKoduGuncelle);
             this.RibMikroGroup.Name = "RibMikroGroup";
-            this.RibMikroGroup.Text = "...";
+            this.RibMikroGroup.Text = "Mikro ERP";
             // 
             // BarBtnMikroSiparisler
             // 
@@ -306,7 +306,7 @@ namespace MyUI
             this.RibUretimGroup.ItemLinks.Add(this.BarBtnOperasyonlar);
             this.RibUretimGroup.ItemLinks.Add(this.BarBtnOperasyonDetaylar);
             this.RibUretimGroup.Name = "RibUretimGroup";
-            this.RibUretimGroup.Text = "...";
+            this.RibUretimGroup.Text = "Üretim Takip";
             // 
             // BarBtnUretimTakip
             // 
@@ -371,7 +371,7 @@ namespace MyUI
             this.RibUretimGroup2.ItemLinks.Add(this.BarBtnIstasyonHareketler);
             this.RibUretimGroup2.ItemLinks.Add(this.BarBtnUretimEkle);
             this.RibUretimGroup2.Name = "RibUretimGroup2";
-            this.RibUretimGroup2.Text = "...";
+            this.RibUretimGroup2.Text = "Mal Kabul & Kontrol";
             // 
             // BarBtnMalKabulListe
             // 
@@ -512,7 +512,7 @@ namespace MyUI
             this.RibReceteGroup1.ItemLinks.Add(this.BarBtnReceteIstasyonGruplar);
             this.RibReceteGroup1.ItemLinks.Add(this.BarBtnReceteIstasyonGrupOperasyonlar);
             this.RibReceteGroup1.Name = "RibReceteGroup1";
-            this.RibReceteGroup1.Text = "...";
+            this.RibReceteGroup1.Text = "Reçeteler";
             // 
             // BarBtnReceteListesi
             // 
@@ -555,7 +555,7 @@ namespace MyUI
             this.RibReceteGroup2.ItemLinks.Add(this.BarBtnOperasyonKartlari);
             this.RibReceteGroup2.ItemLinks.Add(this.BarBtnIstasyonKartlari);
             this.RibReceteGroup2.Name = "RibReceteGroup2";
-            this.RibReceteGroup2.Text = "...";
+            this.RibReceteGroup2.Text = "Kartlar";
             // 
             // BarBtnOperasyonKartlari
             // 
@@ -622,7 +622,7 @@ namespace MyUI
             // 
             this.RibReceteGroup4.ItemLinks.Add(this.BarBtnReceteGrupTakimlar);
             this.RibReceteGroup4.Name = "RibReceteGroup4";
-            this.RibReceteGroup4.Text = "ribbonPageGroup5";
+            this.RibReceteGroup4.Text = "Reçete Grupları";
             // 
             // BarBtnReceteGrupTakimlar
             // 
@@ -648,7 +648,7 @@ namespace MyUI
             this.RibDigerGroup1.ItemLinks.Add(this.BarBtnPersonelListesi);
             this.RibDigerGroup1.ItemLinks.Add(this.BarBtnIstasyonBakimList);
             this.RibDigerGroup1.Name = "RibDigerGroup1";
-            this.RibDigerGroup1.Text = "...";
+            this.RibDigerGroup1.Text = "Personel & Bakım";
             // 
             // BarBtnPersonelListesi
             // 
@@ -673,7 +673,7 @@ namespace MyUI
             this.RibDigerGroup2.ItemLinks.Add(this.BarBtnAcilMesaj);
             this.RibDigerGroup2.ItemLinks.Add(this.BarBtnSmsRapor);
             this.RibDigerGroup2.Name = "RibDigerGroup2";
-            this.RibDigerGroup2.Text = "...";
+            this.RibDigerGroup2.Text = "Bildirimler";
             // 
             // BarBtnAcilMesaj
             // 
@@ -711,7 +711,7 @@ namespace MyUI
             this.RibAyarGroup1.ItemLinks.Add(this.BarBtnIstasyonUretimAyarlari);
             this.RibAyarGroup1.ItemLinks.Add(this.BarBtnSmsAyarlari);
             this.RibAyarGroup1.Name = "RibAyarGroup1";
-            this.RibAyarGroup1.Text = "...";
+            this.RibAyarGroup1.Text = "Program Ayarları";
             // 
             // BarBtnKullanicilar
             // 
@@ -786,7 +786,7 @@ namespace MyUI
             // 
             this.ribbonPageGroup2.ItemLinks.Add(this.BarBtnDbGuncelle);
             this.ribbonPageGroup2.Name = "ribbonPageGroup2";
-            this.ribbonPageGroup2.Text = "...";
+            this.ribbonPageGroup2.Text = "Veritabanı";
             // 
             // BarBtnDbGuncelle
             // 

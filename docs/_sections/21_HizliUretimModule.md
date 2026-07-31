@@ -1,0 +1,46 @@
+## Modul: HizliUretimModule
+
+HizliUretimModule, UretimV4 (CepPatronERP) masaustu uygulamasinda tek bir ekrandan "tek tikla" uretim girisi yapmak icin kullanilir. Klasorde tek form vardir: `FrmHizliUretimEG`. Normal uretim akisi (Siparis -> Uretim Emri -> Istasyon/Operasyon hareketleri -> Mikro'ya kaydetme, bkz. SiparisModule / UretimModule / MikroModul) yerine bu ekran, secilen bir recetenin tek seferde hem urun girisini hem de recete detaylarindaki (hammadde/sarf) stoklarin cikisini Mikro ERP'ye yazar. Yani is emri/istasyon zinciri olmadan, recete + miktar bilgisiyle dogrudan Mikro `STOK_HAREKETLERI`'ne bir fis uretir. Form `My.Kontrol.Formlar` kutuphanesindeki `MyFrmKayit` base formundan turer; alt buton seridi (Kaydet/Yeni/Duzenle/Sil/Yazdir/Kapat + Ilk/Onceki/Sonraki/Son gezinme butonlari) base'den gelir, ancak bu ekranda fiilen yalnizca `BtnKaydet` ve `BtnKapat` islevseldir (`BtnSil.Visible=false`). Veri iki ayri DatabaseFactory ile islenir: `Ortak.DbPro` (UretimV3_FEZA uretim DB — recete okuma) ve `Ortak.DbMikro` (Mikro ERP — depo listesi + fis yazma). Fis turu ve depo/seri/gider/proje gibi tum parametreler kullanici tanimli `MikroEntegre` ayarlarindan (`Ortak.MikroEntAyarlar`, Grup = `HizliUretimFisi`) okunur.
+
+### Hizli Uretim Kayit (`FrmHizliUretimEG.cs` / `.Designer.cs`)
+**Ne ise yarar:** Bir recete (UretimV4 `ReceteAna`) ve miktar secilerek tek seferde Mikro ERP'ye uretim fisi yazar: secilen recete kodunun mamul **giris** hareketi + recetenin tum detaylarindaki (`ReceteDetay.VarsayilanStokKodu`) hammadde/sarf stoklarin **cikis** hareketi olusturulur. Cikis miktarlari recete detay miktari x girilen mamul miktari olarak hesaplanir; her detayda `FireYuzde` varsa fire payi eklenir. Istasyon/operasyon adimlari, is emri ve siparis baglantisi yoktur — adi ustunde "hizli" tek-ekran giristir.
+**Once ne olmali (onkosul):**
+- Mikro entegrasyon ayarlari tanimli olmali (`FrmMikroEntAyarlari` ekraninda Modul=`MikroEntegre`, Grup=`HizliUretimFisi` icin `EvrakSeri`, `GirisDepoKodu`, `CikisDepoKodu`, `GirisGiderKodu`, `CikisGiderKodu` vb. ve Grup=`FisTuru` icin `HizliUretimFisiTuru` = `StokVirmanFisi` veya `UretimHareketFisi`; ayrica Grup=`GENEL` icin `FirmaNo`/`KullaniciKodu`). Bunlar `Ortak.MikroEntAyarlar` cache'inden okunur.
+- Mikro DB (`Ortak.DbMikro`) ve uretim DB (`Ortak.DbPro`) baglantilari hazir olmali.
+- Stok kodu alanindan bir recete secilmis olmali (`rcaId` dolu olmali); aksi halde Kaydet'te recete bulunamaz.
+- Form acilista, ayarlarda tanimli `GirisDepoKodu`'na karsilik gelen depo Giris Depo alanina otomatik secilir; depo listesi Mikro `DEPOLAR` tablosundan yuklenir.
+- `Ortak.PlKapat` ayarina gore PartiNo/LotNo alanlari gizlenir/gosterilir (PlKapat aktifse parti/lot gizlenir).
+**Sonra ne olur:**
+- Kaydet'te recete `Ortak.DbPro` (UretimV3_FEZA) `ReceteAna`/`ReceteDetay` tablolarindan okunur (yazma yapilmaz; bu DB salt okunur kullanilir).
+- Olusturulan `StokHareketleriModel` listesi secili fis turune gore `MikroStokHareketleri` kayitlarina cevrilir ve Mikro ERP `STOK_HAREKETLERI` tablosuna yazilir (parti/lot takipli stoklarda `PARTILOT`, renk/beden takipli stoklarda `BEDEN_HAREKETLERI` kayitlari da otomatik eklenir). Tum yazma tek transaction icinde yapilir.
+- `HizliUretimFisiTuru = StokVirmanFisi` ise virman fisi (sth_cins=3, sth_evraktip=6), `UretimHareketFisi` ise uretim hareket fisi (sth_cins=7, sth_evraktip=7) olarak yazilir; tanimsiz/baska deger gelirse varsayilan olarak StokVirmanFisi kullanilir.
+- Basarili kayitta "KayıtEdildi" bilgi mesaji gosterilir ve `BtnKaydet` pasiflestirilir (ayni fisin tekrar yazilmasini engellemek icin). Hata olursa `MesajHata` ile uyari verilir, kayit yapilmaz.
+- Not: Kayit sonrasi UretimV4 tarafinda hicbir tabloya yazma/guncelleme yoktur (kodda siparis/evrak guncelleme bloklari yorum satiri olarak birakilmis).
+**Butonlar & kisayollar:**
+- `Kaydet` (BtnKaydet) — `Kaydet()` metodunu cagirir; fisi olusturup Mikro'ya yazar. (base'de Enter = Kaydet davranisi gelir.)
+- `Kapat` (BtnKapat) — formu kapatir. (base'de Esc = Kapat.)
+- `Sil` (BtnSil) — gizli (`Visible=false`), bu ekranda kullanilmaz.
+- `Yeni` / `Duzenle` / `Yazdir` ve gezinme butonlari (Ilk/Onceki/Sonraki/Son) — base `MyFrmKayit`'ten gelir; bu ekranda anlamli bir islevi yoktur (kayit gezme/listeleme mantigi bu form icin kurulmamis).
+- `StokKodu` alani button-click (TxtStokKodu butonu) — `FrmReceteListesi`'ni secim modunda (Maximized) acar; recete secilince StokKodu/StokAdi/Birim doldurulur ve `rcaId` set edilir.
+- `StokAdi` alani button-click (TxtStokAdi butonu) — yukaridakiyle ayni davranis (recete secim penceresini acar).
+- Alanlar: `StokKodu`, `StokAdi`, `Birim` (TxtBirim1, secilen recetenin `EntegreBirim` degeri), `Miktar` (TxtMiktar, >0 zorunlu), `Giris Depo` (TxtDepoNoGiris lookup), `PartiNo` (TxtPartiNo, PlKapat'a gore gizli), `Lot` (TxtLotNo, PlKapat'a gore gizli).
+**Cagirdigi katmanlar:**
+- Manager: `ReceteManager.GetReceteKayit(Guid? rcaId)` (`Ortak.DbPro`) — secili recetenin ana + detay (+ stok/istasyon/renk-beden) kayitlarini `ReceteKayitModel` olarak getirir; Kaydet, bunun `ReceteDetaylar` listesini cikis hareketleri icin kullanir.
+- Manager: `MikroConvertManager.SetHizliUretimFisiUrunGirisAyar(sth, ayarlar, depoGir)` — mamul giris hareketine ayarlardan giris depo (ekrandan secilen depo override eder), evrak seri, gider/proje/sorumluluk merkezi alanlarini set eder (`GirisDepoKodu`/`GirisGiderKodu`).
+- Manager: `MikroConvertManager.SetHizliUretimFisiStokCikisAyar(sth2, ayarlar)` — her recete detayindan olusan cikis hareketine ayarlardan cikis depo/gider (`CikisDepoKodu`/`CikisGiderKodu`) ve seri bilgisini set eder.
+- Manager: `MikroConvertManager.ConvertStokVirmanFisi(lisStokFisi, ayarlar)` — StokHareketleriModel listesini virman fisine (sth_cins=3, sth_evraktip=6) cevirir; `GetStokVirmanEvrakSira(seri)` ile siradaki evrak no'yu hesaplar, firma/kullanici kodunu ayarlardan alir, depo 0 ise 1'e cevirir.
+- Manager: `MikroConvertManager.ConvertUretimHareketFisi(lisStokFisi, ayarlar)` — alternatif fis turu; uretim hareket fisine (sth_cins=7, sth_evraktip=7) cevirir; `GetUretimHareketFisiEvrakSira(seri)` ile evrak sirasi hesaplar.
+- Manager: `MikroKayitManager.StokHareketKaydet(lisMikro)` — Mikro `STOK_HAREKETLERI`'ne yazar (transaction). Stok kartinin `sto_detay_takip` / `sto_renkDetayli` / `sto_bedenli_takip` degerlerine bakarak gerektiginde `PARTILOT` (parti/lot) ve `BEDEN_HAREKETLERI` (renk/beden) kayitlarini da uretir; parti no daha once girilmisse hata doner.
+- Helper: `MikroKayitFisTurleri.GetHizliUretimFisiTuru(ayarDegeri)` — `FisTuru/HizliUretimFisiTuru` ayar metnini `MikroFisGirisTurleri` enum'una cevirir (yalnizca `StokVirmanFisi` veya `UretimHareketFisi`).
+- Service: `IMikroGenelService.GetMikroDepoListesi(" order by dep_no")` (`Ortak.DbMikro.GenelServis`) — Giris Depo lookup'i icin Mikro `DEPOLAR` tablosundan (`dep_no`, `dep_adi`) depo listesini ceker.
+- SQL/Prosedur: Dogrudan saklı prosedur cagrilmaz. Kullanilan sorgular ham SQL'dir: recete okuma `ReceteAna`/`ReceteDetay` uzerinden (QueryBuilder SelectFirst/SelectList); evrak sira hesaplama `SELECT ISNULL(MAX(sth_evrakno_sira),0) ... FROM STOK_HAREKETLERI`; stok takip tipi `SELECT sto_detay_takip, sto_renkDetayli, sto_bedenli_takip ... FROM STOKLAR`; yazma `STOK_HAREKETLERI` / `PARTILOT` / `BEDEN_HAREKETLERI` insert.
+- API: -
+**Istasyon sirasiyla iliskisi:** Yoktur. Bu ekran istasyon/operasyon zincirini (UretimIstasyon, IstasyonHareketler, ReceteyeBagliIstasyon) tamamen atlar; secilen recetenin `GetReceteKayit` ile gelen `ReceteyeBagliIstasyonlar` koleksiyonu okunsa da Kaydet mantiginda kullanilmaz. Yalnizca recetenin malzeme listesi (`ReceteDetaylar`) reçeteden uretim sarfini hesaplamak icin kullanilir. Yani "hizli uretim" = istasyon bazli takip yapmadan, recete + miktardan dogrudan stok giris/cikis fisi.
+**Notlar:**
+- Form ana menuden `FrmAna.BarBtnHizliUretim_ItemClick` ile modal (`ShowDialog`) acilir; parametre/onkosul gerektirmez.
+- `Miktar <= 0` ise kayit engellenir ("Lütfen Miktar Giriniz").
+- Cikis miktari hesabi: `gec_miktar = ReceteDetay.Miktar + (Miktar * FireYuzde/100)`, sonra `sth_miktar = gec_miktar * mamulMiktari`. (Fire yuzdesi recete detay birim miktarina uygulanir, sonra mamul miktariyla carpilir.)
+- Tum hareketlerde `sth_special2 = "HZL"` (hizli uretim isareti); `StokHareketKaydet` ayrica `sth_special3 = "AKT"` (aktarildi) damgasini ekler. Giris hareketi `sth_tip=0`, cikis hareketleri `sth_tip=1`.
+- PartiNo/Lot yalnizca mamul giris hareketine (`sth_parti_kodu`, `sth_lot_no`) yazilir; recete detay (cikis) hareketlerinde parti/lot bos birakilir. Parti/lot takipli stokta `StokHareketKaydet` lot no bos ise 1'e tamamlar ve mukerrer parti kontrolu yapar.
+- `_mikroStokService` ve `_mngMikroKayit` alanlari ile renk/beden bagla metotlari (RenkBagla/BedenBagla) tanimli ama tamamen yorum satirinda; ekranda renk/beden secimi suanda devre disi (renk/beden hareketi yine de stok kartinin takip tipine gore StokHareketKaydet icinde otomatik islenir — fakat bu ekrandan Renk/Beden degeri gonderilmedigi icin pratikte renk/beden hareketi olusmaz).
+- Belge no bos (`sth_belge_no = ""`) ve tarih alanlari `DateTime.Now` olarak set edilir; tutar/fiyat bilgisi gonderilmez (sth_tutar = Fiyat(0) * miktar = 0).
